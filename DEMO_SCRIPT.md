@@ -1,4 +1,4 @@
-# ARGUS Demo Script — about 4 minutes (limit 5:00)
+# ARGUS Demo Script — about 4:30 (limit 5:00)
 
 Say it in your own words, on camera or in your own voice. **Bold = what to click.** Speak slowly; pauses are fine.
 
@@ -6,35 +6,44 @@ Say it in your own words, on camera or in your own voice. **Bold = what to click
 
 ---
 
-## 0:00 – Intro (Dashboard)
-"Hi, I'm Sanskriti. This is ARGUS, a research tool for Charles Schwab's equity analysts. After every earnings release, analysts have to check whether what management *says* matches what the filings *show*. Wording shifts every quarter, and accounting baselines quietly change. I tested it on NVIDIA's last six quarters. Every calculation runs in plain Python, so there's no AI math to trust."
+## 0:00 – The problem and how ARGUS solves it (Dashboard)
+"Hi, I'm Sanskriti. This is ARGUS, built for Charles Schwab's equity research analysts.
 
-## 0:30 – Dashboard (scroll down slowly)
-"Here are the seven findings, sorted into the four categories.
-In the latest quarter, revenue grew about 18%. But operating cash flow *fell* 52%, because receivables jumped 55% to $63 billion. That's the main thing worth asking management about.
-Second, management guided operating expense growth to the 'high-30s.' Actual growth was 40.7% GAAP and 42.5% non-GAAP.
-Third, NVIDIA changed how it treats stock comp and restated old numbers. Last year's Q4 non-GAAP expenses went from $5.1 billion to $6.7 billion. Anyone splicing old and new data would get a fake spike."
+**The problem:** after every earnings release, an analyst has to check whether what management *said* matches what the filings *show*. That's slow, and it's easy to miss things, because the wording changes every quarter and companies sometimes change their accounting, which breaks old comparisons.
 
-## 1:20 – Timeline
+**How ARGUS solves it, in three steps:**
+1. It links a management statement to the filing numbers it relates to.
+2. Python recalculates every figure and classifies it into one of four categories. No AI does the math.
+3. It shows the full evidence trail: the quote, the source link, the formula, and evidence on both sides.
+
+**What the AI does:** AI did the heavy lifting of gathering and cross-checking NVIDIA's six quarters of filings and building this prototype. Inside the app, the linking step is a rule-based matcher, and the numbers are plain Python, so everything is auditable."
+
+## 0:55 – Dashboard (scroll down slowly)
+"Here are the seven findings in four categories.
+Latest quarter: revenue grew about 18%, but operating cash flow *fell* 52% because receivables jumped 55% to $63 billion. That's the one to ask management about.
+Management guided expense growth to the 'high-30s.' Actual: 40.7% GAAP, 42.5% non-GAAP.
+And NVIDIA changed its stock-comp treatment and restated old numbers: last year's Q4 expenses went from $5.1 billion to $6.7 billion. Splicing old and new data would show a fake spike."
+
+## 1:35 – Timeline
 **Timeline** tab → dropdown → **GAAP Operating Cash Flow**.
 "Every number has its units, period and a link to the filing." *(Open one filing expander to show the link.)*
 
-## 1:40 – Evidence Explorer
+## 1:55 – Evidence Explorer
 **Evidence Explorer** → select **CMP-NVDA-003**.
 "This is the cash flow finding. On the left is the CEO's quote, 'compute is revenue.' On the right is the follow-up, and here's the Python formula. I call it a *potential divergence*, a question for an analyst, not an accusation. The page also shows evidence that cuts the other way, like first-half cash flow still up 74%, and other explanations, like shipment timing."
 
-## 2:15 – Research Lab
+## 2:30 – Research Lab
 **Research Lab** tab.
 "This prototype filters preloaded data. It doesn't fetch new filings or call an LLM."
 1. Question: **Narrative-versus-metric analysis** → **Run Research Review** → select **CMP-NVDA-003** → challenge **Contrary evidence** → **Download research brief**.
 2. Question: **Evidence gaps** → **Run Research Review** → select **CMP-NVDA-005** → challenge **Contrary evidence**.
 "Here no contrary evidence is recorded. ARGUS calls that *missing evidence*, not proof there is none."
 
-## 3:05 – Validation and honesty
+## 3:20 – Validation and honesty
 **Validation** tab.
-"One thing I want to be upfront about. AI helped me research the filings and build this. Inside the app, matching is a simple rule-based matcher. It isn't a trained model and makes no live AI calls. On my 12-example test it beats keyword search, 100% versus 33% precision. But that's a tiny test and I wrote the rules while looking at the same filings, so it's a sanity check, not proof. I also ran 21 automated tests, and they pass."
+"To be upfront about the AI: the matcher is simple rules, not a trained model, and there are no live AI calls. On my 12-example test it beats keyword search, 100% versus 33% precision. But it's a tiny test and I wrote the rules while reading the same filings, so it's a sanity check, not proof. I also ran 21 automated tests, and they pass."
 
-## 3:40 – Wrap-up (back to Dashboard)
+## 3:55 – Wrap-up (back to Dashboard)
 "For Schwab, this means faster, auditable post-earnings checks and fewer errors from restated numbers. I'd measure success by analyst time saved per release and how many flagged leads analysts find useful. I haven't measured that yet. The limits: one company, public filings, a small test. Next step is swapping in an LLM matcher, tested on a much bigger set, with the same Python checks. Thank you."
 
 ---
