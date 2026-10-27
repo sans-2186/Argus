@@ -3,10 +3,12 @@ ARGUS — AI Financial Research Intelligence
 Core Analytical, Semantic Discovery, and Deterministic Verification Engine
 ==========================================================================
 Separates probabilistic/semantic AI discovery from deterministic Python verification:
-1. AI / Semantic Role: Connects management statements across filings even when wording shifts
-   (e.g., 'compute is revenue' -> cash conversion / accounts receivable; 'high-30% range' -> 41% YoY).
-   Supports optional live Gemini API integration if GEMINI_API_KEY is configured, while providing
-   a transparent, zero-key Concept-Aware Financial Semantic Vector Engine out of the box.
+1. Matching Role: Connects management statements across filings even when wording shifts
+   (e.g., 'compute is revenue' -> cash conversion / accounts receivable; 'high-30% range' -> 41% YoY)
+   using a LOCAL, rule-based matcher: a hand-built financial concept ontology
+   (FINANCIAL_CONCEPT_CLUSTERS), content-token overlap, and a segment-conflict penalty.
+   It is not a trained model or an embedding model, and it makes NO live Gemini (or other LLM/API)
+   calls. The presence of a GEMINI_API_KEY environment variable does not change its behavior.
 2. Deterministic Python Role: Computes exact YoY/QoQ growth rates, basis-point margin changes,
    accounting restatement deltas, DSO/working capital ratios, and applies transparent rule-based
    classification into the four required analyst categories:
@@ -23,6 +25,12 @@ import os
 import re
 from dataclasses import dataclass, asdict
 from typing import Dict, List, Optional, Tuple, Any
+
+# Shown in the UI. Keep in sync with the implementation below: no live Gemini/LLM call exists.
+ENGINE_STATUS_MESSAGE = (
+    "Local concept-aware matching active. "
+    "No live Gemini inference is being performed in this workflow."
+)
 
 # Four mandatory competition finding categories
 CATEGORY_MISMATCH = "Verified numerical mismatch"
@@ -126,7 +134,7 @@ def compute_keyword_baseline_score(text_a: str, text_b: str) -> float:
 
 def compute_semantic_similarity_score(text_a: str, text_b: str) -> Tuple[float, Dict[str, Any]]:
     """
-    Transparent AI-Assisted / Concept-Aware Semantic Similarity Engine.
+    Local concept-aware similarity scoring (rule-based; not a trained or embedding model).
     Combines:
     1. Content-word TF-IDF / cosine overlap (stripping earnings release boilerplate).
     2. Financial Concept Ontology activation across 7 institutional research dimensions.
@@ -183,7 +191,7 @@ def compute_semantic_similarity_score(text_a: str, text_b: str) -> Tuple[float, 
     final_score = round(max(0.02, min(0.98, combined)), 4)
 
     details = {
-        "engine_mode": "Concept-Aware Financial Semantic Vector Engine (Deterministic Local AI Baseline)",
+        "engine_mode": "Local concept-aware matching (ontology + token overlap; no trained model, no live API calls)",
         "shared_concepts": [c["concept"] for c in matched_concepts],
         "matched_concept_details": matched_concepts,
         "content_token_cosine": round(content_overlap, 4),
