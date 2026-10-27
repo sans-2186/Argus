@@ -155,6 +155,17 @@ INSTITUTIONAL_CSS = """
         color: #B6C4D9;
         margin: 8px 0 14px 0;
     }
+    .fcard {
+        background-color: #151B26; border: 1px solid #262F40; border-left: 5px solid var(--c, #38BDF8);
+        border-radius: 6px; padding: 14px 16px; margin-bottom: 14px; min-height: 178px;
+    }
+    .fcard-id { font-size: 0.74rem; color: #8B9BB4; letter-spacing: 0.06em; }
+    .fcard-title { font-size: 0.95rem; font-weight: 600; color: #F1F5F9; margin: 4px 0 8px 0; line-height: 1.3; }
+    .fcard-delta { font-size: 0.82rem; color: #CBD5E1; margin: 8px 0; display: -webkit-box;
+        -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .fcard-meta { font-size: 0.74rem; color: #64748B; }
+    .bar-bg { background: #0F141C; border-radius: 3px; height: 6px; width: 100%; margin-top: 6px; }
+    .bar-fg { background: #38BDF8; height: 6px; border-radius: 3px; }
     .chain-step {
         background-color: #161E2E;
         border: 1px solid #2B3954;
@@ -456,20 +467,116 @@ with tab_exec:
         st.plotly_chart(fig_opex, use_container_width=True)
         st.caption("Source: NVIDIA Q2 FY26–Q2 FY27 GAAP-to-Non-GAAP Reconciliations. Units: $ in millions.")
 
-    st.markdown("#### Summary of Verified Findings")
-    summary_rows = []
-    for c in filtered_comparisons:
-        summary_rows.append({
-            "ID": c["comparison_id"],
-            "Comparison Title": c["title"],
-            "Periods": f"{c['baseline_period']} → {c['target_period']}",
-            "Finding Category": c["category"],
-            "Concept Match Score (local)": c["matching_metadata"]["ai_semantic_score"],
-            "Keyword Score": c["matching_metadata"]["keyword_overlap_score"],
-            "Deterministic Delta": c["metric_verification"]["calculated_delta"],
-            "Source Document": c["statement_origin"]["source_id"],
-        })
-    st.dataframe(pd.DataFrame(summary_rows), use_container_width=True, hide_index=True)
+    # ---- Visual story row -------------------------------------------------------------
+    st.markdown("#### Findings at a Glance")
+    v1, v2, v3 = st.columns(3)
+    _chart_layout = dict(
+        template="plotly_dark", paper_bgcolor="#151B26", plot_bgcolor="#151B26", height=360,
+        legend=dict(orientation="h", yanchor="top", y=-0.18, xanchor="left", x=0, font=dict(size=11)),
+    )
+
+    with v1:
+        _counts = {cat: sum(1 for c in all_comparisons if c["category"] == cat) for cat in ae.VALID_CATEGORIES}
+        fig_donut = go.Figure(go.Pie(
+            labels=list(_counts.keys()), values=list(_counts.values()), hole=0.62, sort=False,
+            marker=dict(colors=[rl.CATEGORY_COLORS[k] for k in _counts], line=dict(color="#151B26", width=3)),
+            textinfo="value", textfont=dict(size=16),
+        ))
+        fig_donut.update_layout(
+            **_chart_layout,
+            title=dict(text="Findings by classification", font=dict(size=15), x=0.0, xanchor="left"),
+            margin=dict(l=10, r=10, t=50, b=60),
+            annotations=[dict(text=f"<b>{len(all_comparisons)}</b><br>findings", x=0.5, y=0.5, showarrow=False, font=dict(size=18))],
+        )
+        st.plotly_chart(fig_donut, use_container_width=True)
+
+    with v2:
+        _periods = list(metrics_df["period"])
+        def _qoq(col):
+            vals = list(metrics_df[col])
+            return [None] + [rl.safe_pct_change(vals[i - 1], vals[i]) for i in range(1, len(vals))]
+        fig_qoq = go.Figure()
+        for _col, _name, _color in (
+            ("revenue_m", "Revenue", "#38BDF8"),
+            ("operating_cash_flow_m", "Operating cash flow", "#10B981"),
+            ("accounts_receivable_m", "Accounts receivable", "#F59E0B"),
+        ):
+            _y = _qoq(_col)
+            fig_qoq.add_trace(go.Bar(
+                x=_periods[1:], y=_y[1:], name=_name, marker_color=_color,
+                hovertemplate="%{x}<br>" + _name + ": %{y:+.1f}% QoQ<extra></extra>",
+            ))
+        fig_qoq.add_hline(y=0, line_color="#475569", line_width=1)
+        fig_qoq.update_layout(
+            **_chart_layout, barmode="group",
+            title=dict(text="QoQ growth: revenue vs. cash flow vs. receivables", font=dict(size=15), x=0.0, xanchor="left"),
+            margin=dict(l=40, r=10, t=50, b=60), yaxis=dict(title="QoQ change (%)"),
+        )
+        st.plotly_chart(fig_qoq, use_container_width=True)
+
+    with v3:
+        _g = next((c for c in all_comparisons if c["comparison_id"] == "CMP-NVDA-001"), None)
+        _ri = (_g or {}).get("metric_verification", {}).get("raw_inputs", {})
+        _gaap = rl.safe_pct_change(_ri.get("fy25_gaap_opex_m"), _ri.get("fy26_gaap_opex_m"))
+        _ng = rl.safe_pct_change(_ri.get("fy25_nongaap_opex_m"), _ri.get("fy26_nongaap_opex_m"))
+        _ceiling = _ri.get("guided_upper_bound_pct")
+        if _gaap is None or _ng is None or _ceiling is None:
+            st.caption("Guidance-vs-actual chart unavailable: required OpEx inputs are not in the data.")
+        else:
+            fig_guide = go.Figure(go.Bar(
+                x=["Guided ceiling<br>('high-30%')", "FY26 GAAP<br>actual", "FY26 Non-GAAP<br>actual"],
+                y=[_ceiling, _gaap, _ng],
+                marker_color=["#64748B", "#EF4444", "#EF4444"],
+                text=[f"{_ceiling:.1f}%", f"{_gaap:.2f}%", f"{_ng:.2f}%"], textposition="outside",
+                hovertemplate="%{x}: %{y:.2f}% YoY<extra></extra>",
+            ))
+            fig_guide.add_hline(y=_ceiling, line_dash="dash", line_color="#F59E0B", line_width=1.5)
+            fig_guide.update_layout(
+                **{**_chart_layout, "legend": dict(visible=False)},
+                title=dict(text="FY26 OpEx growth: guidance vs. actual", font=dict(size=15), x=0.0, xanchor="left"),
+                margin=dict(l=40, r=10, t=50, b=60),
+                yaxis=dict(title="YoY growth (%)", range=[0, max(_ceiling, _gaap, _ng) * 1.18]),
+            )
+            st.plotly_chart(fig_guide, use_container_width=True)
+
+    # ---- Finding cards ----------------------------------------------------------------
+    st.markdown("#### Verified Findings")
+    if not filtered_comparisons:
+        st.info("No findings match the current sidebar filters.")
+    for _row_start in range(0, len(filtered_comparisons), 3):
+        _cols = st.columns(3)
+        for _col, c in zip(_cols, filtered_comparisons[_row_start:_row_start + 3]):
+            _score = c["matching_metadata"]["ai_semantic_score"]
+            _color = rl.CATEGORY_COLORS.get(c["category"], "#38BDF8")
+            with _col:
+                st.markdown(
+                    f"""
+                    <div class="fcard" style="--c:{_color};">
+                        <div class="fcard-id">{rl.html_safe(c['comparison_id'])} &nbsp;|&nbsp; {rl.html_safe(c['baseline_period'])} → {rl.html_safe(c['target_period'])}</div>
+                        <div class="fcard-title">{rl.html_safe(c['title'])}</div>
+                        {render_category_badge(c['category'])}
+                        <div class="fcard-delta">{rl.html_safe(c['metric_verification']['calculated_delta'])}</div>
+                        <div class="fcard-meta">Concept match (local) {_score:.2f} &nbsp;|&nbsp; {rl.html_safe(c['statement_origin']['source_id'])}</div>
+                        <div class="bar-bg"><div class="bar-fg" style="width:{max(0.0, min(1.0, _score)) * 100:.0f}%;"></div></div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+    with st.expander("View findings as a table", expanded=False):
+        summary_rows = []
+        for c in filtered_comparisons:
+            summary_rows.append({
+                "ID": c["comparison_id"],
+                "Comparison Title": c["title"],
+                "Periods": f"{c['baseline_period']} → {c['target_period']}",
+                "Finding Category": c["category"],
+                "Concept Match Score (local)": c["matching_metadata"]["ai_semantic_score"],
+                "Keyword Score": c["matching_metadata"]["keyword_overlap_score"],
+                "Deterministic Delta": c["metric_verification"]["calculated_delta"],
+                "Source Document": c["statement_origin"]["source_id"],
+            })
+        st.dataframe(pd.DataFrame(summary_rows), use_container_width=True, hide_index=True)
 
 
 # ==============================================================================
