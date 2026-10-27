@@ -1,0 +1,150 @@
+{
+  "manifest_version": "1.0.0",
+  "last_updated": "2026-10-26",
+  "proposed_user": "Charles Schwab Investment Research Team (Independent Prototype \u2014 Not an official Charles Schwab product)",
+  "research_subject": {
+    "company_name": "NVIDIA Corporation",
+    "ticker": "NVDA",
+    "cik": "0001045810",
+    "exchange": "NASDAQ"
+  },
+  "sources": [
+    {
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027",
+      "document_type": "Earnings Release / Form 8-K Exhibit 99.1",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "period_ended": "2026-07-26",
+      "verification_status": "Verified Authentic",
+      "extracted_metrics": [
+        "Total Revenue: $96,221M (up 18% Q/Q, up 106% Y/Y)",
+        "Data Center Revenue: $89,000M (up 18% Q/Q, up 117% Y/Y)",
+        "Edge Computing Revenue: $7,200M (up 13% Q/Q, up 27% Y/Y)",
+        "GAAP Gross Margin: 75.0% | Non-GAAP Gross Margin: 75.0%",
+        "GAAP Operating Expenses: $8,408M | Non-GAAP Operating Expenses: $8,232M",
+        "GAAP Operating Income: $63,734M | Non-GAAP Operating Income: $63,956M",
+        "GAAP Net Income: $59,688M | Non-GAAP Net Income: $53,954M",
+        "GAAP Diluted EPS: $2.46 | Non-GAAP Diluted EPS: $2.22",
+        "GAAP Operating Cash Flow: $24,077M | Free Cash Flow: $21,341M",
+        "Accounts Receivable, net: $63,059M | Inventories: $31,575M",
+        "Long-Term Debt: $32,366M | Shareholder Returns: ~$26,000M",
+        "Q3 FY27 Outlook: Revenue $108.0B \u00b12%, GAAP/Non-GAAP Gross Margin 74.0% \u00b150 bps, GAAP OpEx ~$9.2B"
+      ],
+      "extracted_excerpts_count": 4
+    },
+    {
+      "source_id": "SRC-NVDA-Q1FY27-PR",
+      "title": "NVIDIA Announces Financial Results for First Quarter Fiscal 2027",
+      "document_type": "Earnings Release / Form 8-K Exhibit 99.1",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "sec_mirror_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx",
+      "publication_date": "2026-05-20",
+      "reporting_period": "Q1 FY27",
+      "period_ended": "2026-04-26",
+      "verification_status": "Verified Authentic",
+      "extracted_metrics": [
+        "Total Revenue: $81,615M (up 20% Q/Q, up 85% Y/Y)",
+        "Data Center Revenue: $75,200M (up 21% Q/Q, up 92% Y/Y)",
+        "Data Center Compute: $60,400M (up 18% Q/Q) | Networking: $14,800M (up 35% Q/Q)",
+        "Edge Computing Revenue: $6,400M (up 10% Q/Q, up 29% Y/Y)",
+        "GAAP Gross Margin: 74.9% | Non-GAAP Gross Margin: 75.0% (SBC now included in Non-GAAP)",
+        "GAAP Operating Expenses: $7,621M | Non-GAAP Operating Expenses: $7,449M",
+        "GAAP Operating Income: $53,536M | Non-GAAP Operating Income: $53,783M",
+        "GAAP Net Income: $58,321M | Non-GAAP Net Income: $45,548M",
+        "GAAP Diluted EPS: $2.39 | Non-GAAP Diluted EPS: $1.87",
+        "GAAP Operating Cash Flow: $50,344M | Free Cash Flow: $48,554M",
+        "Q2 FY27 Outlook: Revenue $91.0B \u00b12%, GAAP GM 74.9%, Non-GAAP GM 75.0%, GAAP OpEx ~$8.5B"
+      ],
+      "extracted_excerpts_count": 3
+    },
+    {
+      "source_id": "SRC-NVDA-Q4FY26-PR",
+      "title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026",
+      "document_type": "Earnings Release / Form 8-K Exhibit 99.1",
+      "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/",
+      "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26pr.htm",
+      "publication_date": "2026-02-25",
+      "reporting_period": "Q4 FY26 & FY26",
+      "period_ended": "2026-01-25",
+      "verification_status": "Verified Authentic",
+      "extracted_metrics": [
+        "Q4 FY26 Revenue: $68,127M (up 20% Q/Q, up 73% Y/Y) | FY26 Revenue: $215,938M (up 65% Y/Y)",
+        "Q4 FY26 Data Center Revenue: $62,300M (up 22% Q/Q, up 75% Y/Y) | FY26 Data Center: $193,700M (up 68% Y/Y)",
+        "Q4 FY26 GAAP Gross Margin: 75.0% | Non-GAAP Gross Margin: 75.2% (75.1% restated with SBC in Q1 FY27 table)",
+        "FY26 GAAP Gross Margin: 71.1% | Non-GAAP Gross Margin: 71.3%",
+        "Q4 FY26 GAAP OpEx: $6,794M | Non-GAAP OpEx (excl. SBC): $5,102M | Non-GAAP OpEx (incl. SBC): $6,666M",
+        "Q4 FY26 GAAP Net Income: $42,960M | Non-GAAP Net Income: $39,552M",
+        "Q4 FY26 Operating Cash Flow: $36,190M | Free Cash Flow: $34,902M | FY26 FCF: $96,575M",
+        "Q1 FY27 Outlook: Revenue $78.0B \u00b12%, GAAP GM 74.9%, Non-GAAP GM 75.0% (incl. 0.1% SBC impact)"
+      ],
+      "extracted_excerpts_count": 3
+    },
+    {
+      "source_id": "SRC-NVDA-FY26-10K",
+      "title": "NVIDIA Corporation FY2026 Form 10-K Annual Report (For the Fiscal Year Ended January 25, 2026)",
+      "document_type": "SEC Form 10-K Annual Report",
+      "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm",
+      "sec_mirror_url": "https://www.sec.gov/edgar/browse/?CIK=1045810&owner=exclude",
+      "publication_date": "2026-02-25",
+      "reporting_period": "FY26",
+      "period_ended": "2026-01-25",
+      "verification_status": "Verified Authentic",
+      "extracted_metrics": [
+        "FY26 Consolidated Revenue: $215,938M vs FY25 $130,497M (+65.47%)",
+        "FY26 Cost of Revenue: $62,475M | Gross Profit: $153,463M (71.07% GAAP Gross Margin)",
+        "FY26 Research & Development: $18,497M | SG&A: $4,579M | Total OpEx: $23,076M (+40.66% Y/Y)",
+        "FY26 GAAP Operating Income: $130,387M | Net Income: $120,067M | Diluted EPS: $4.90",
+        "FY26 Balance Sheet (as of Jan 25, 2026): Cash & Marketable Securities $62,556M, AR $38,466M, Inventories $21,403M, Long-Term Debt $7,469M",
+        "FY26 Stock-Based Compensation Expense: $6,386M ($261M Cost of Revenue, $4,676M R&D, $1,449M SG&A)",
+        "FY26 Shareholder Returns: $40,086M share repurchases + $974M cash dividends = $41,060M (~$41.1B)"
+      ],
+      "extracted_excerpts_count": 2
+    },
+    {
+      "source_id": "SRC-NVDA-Q3FY26-PR",
+      "title": "NVIDIA Announces Financial Results for Third Quarter Fiscal 2026",
+      "document_type": "Earnings Release / Form 8-K Exhibit 99.1",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2026",
+      "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000228/q3fy26pr.htm",
+      "publication_date": "2025-11-19",
+      "reporting_period": "Q3 FY26",
+      "period_ended": "2025-10-26",
+      "verification_status": "Verified Authentic",
+      "extracted_metrics": [
+        "Total Revenue: $57,006M (up 22% Q/Q, up 62% Y/Y)",
+        "Data Center Revenue: $51,200M (up 25% Q/Q, up 66% Y/Y)",
+        "GAAP Gross Margin: 73.4% | Non-GAAP Gross Margin: 73.6%",
+        "GAAP Operating Expenses: $5,839M | Non-GAAP Operating Expenses: $4,215M",
+        "GAAP Operating Income: $36,010M | Non-GAAP Operating Income: $37,752M",
+        "GAAP Net Income: $31,910M | Non-GAAP Net Income: $31,767M",
+        "Operating Cash Flow: $23,750M | Free Cash Flow: $22,089M",
+        "Q4 FY26 Outlook: Revenue $65.0B \u00b12%, GAAP GM 74.8%, Non-GAAP GM 75.0%, GAAP OpEx ~$6.7B ($6,650M)"
+      ],
+      "extracted_excerpts_count": 2
+    },
+    {
+      "source_id": "SRC-NVDA-Q2FY26-PR",
+      "title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2026",
+      "document_type": "Earnings Release / Form 8-K Exhibit 99.1",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026",
+      "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm",
+      "publication_date": "2025-08-27",
+      "reporting_period": "Q2 FY26",
+      "period_ended": "2025-07-27",
+      "verification_status": "Verified Authentic",
+      "extracted_metrics": [
+        "Total Revenue: $46,743M (up 6% Q/Q, up 56% Y/Y)",
+        "Data Center Revenue: $41,100M (up 5% Q/Q, up 56% Y/Y)",
+        "GAAP Gross Margin: 72.4% | Non-GAAP Gross Margin: 72.7% (72.3% excl. $180M H20 release; 72.5% restated with SBC)",
+        "GAAP Operating Expenses: $5,413M | Non-GAAP Operating Expenses: $3,795M ($5,361M restated with SBC)",
+        "GAAP Operating Income: $28,440M | GAAP Net Income: $26,422M",
+        "Operating Cash Flow: $15,365M | Free Cash Flow: $13,450M",
+        "Q3 FY26 Outlook: Revenue $54.0B \u00b12%, GAAP GM 73.3%, Non-GAAP GM 73.5%, Full-year FY26 OpEx growth in high-30% range"
+      ],
+      "extracted_excerpts_count": 3
+    }
+  ]
+}

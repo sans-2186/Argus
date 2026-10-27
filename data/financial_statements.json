@@ -1,0 +1,449 @@
+[
+  {
+    "comparison_id": "CMP-NVDA-001",
+    "company": "NVIDIA",
+    "title": "FY2026 Operating Expense Growth Guidance vs. Full-Year 10-K Realization",
+    "category": "Verified numerical mismatch",
+    "severity": "Moderate (Guidance vs. Actual Realization)",
+    "baseline_period": "Q2 FY26",
+    "target_period": "FY26",
+    "statement_origin": {
+      "speaker": "Management Outlook / CFO Commentary",
+      "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2026",
+      "source_id": "SRC-NVDA-Q2FY26-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026",
+      "publication_date": "2025-08-27",
+      "reporting_period": "Q2 FY26",
+      "exact_excerpt": "GAAP and non-GAAP operating expenses are expected to be approximately $5.9 billion and $4.2 billion, respectively. Full year fiscal 2026 operating expense growth is expected to be in the high-30% range."
+    },
+    "follow_up_statement": {
+      "speaker": "FY2026 Form 10-K / Q4 FY26 Release",
+      "document_title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026 & Form 10-K",
+      "source_id": "SRC-NVDA-FY26-10K",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm",
+      "publication_date": "2026-02-25",
+      "reporting_period": "FY26",
+      "exact_excerpt": "GAAP ($ in millions): Operating expenses FY26 $23,076 vs. FY25 $16,405, up 41% Y/Y. Non-GAAP ($ in millions): Operating expenses FY26 $16,694 vs. FY25 $11,716, up 42% Y/Y."
+    },
+    "metric_verification": {
+      "metric_name": "Full-Year Operating Expenses YoY Growth (%)",
+      "units": "% YoY ($ in millions)",
+      "baseline_value": 38.0,
+      "baseline_label": "Guided Ceiling ('high-30% range', i.e. 36.0%\u201339.9%)",
+      "reported_value": 40.66,
+      "reported_label": "FY26 GAAP OpEx YoY (+40.66% exact; 41% table) & Non-GAAP OpEx YoY (+42.49% exact; 42% table)",
+      "raw_inputs": {
+        "fy25_gaap_opex_m": 16405.0,
+        "fy26_gaap_opex_m": 23076.0,
+        "fy25_nongaap_opex_m": 11716.0,
+        "fy26_nongaap_opex_m": 16694.0,
+        "guided_upper_bound_pct": 39.9
+      },
+      "python_formula": "gaap_opex_yoy = ((23076 - 16405) / 16405) * 100  # = 40.6644%\nnongaap_opex_yoy = ((16694 - 11716) / 11716) * 100  # = 42.4889%\nmismatch_bps = (gaap_opex_yoy - 39.9) * 100  # Exceeds high-30% ceiling",
+      "calculated_delta": "+266 bps above 38.0% midpoint (+76 bps above 39.9% ceiling on GAAP; +259 bps above ceiling on Non-GAAP)",
+      "rule_triggered": "RULE_NUMERICAL_MISMATCH: Actual full-year GAAP OpEx growth (40.66% / 41% reported) and Non-GAAP OpEx growth (42.49% / 42% reported) both crossed into the 40%+ tier, exceeding the 'high-30% range' (36%\u201339.9%) full-year guidance issued in Q2 FY26."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.86,
+      "keyword_overlap_score": 0.41,
+      "why_semantic_wins": "Management phrased the Q2 FY26 target qualitatively as 'in the high-30% range' while the Q4 FY26 / 10-K table reported tabular figures ('$23,076M vs $16,405M, 41%'). Exact keyword matching misses the link between 'high-30% range' and '41% / 42%', whereas semantic concept mapping connects qualitative percentage range descriptors to realized YoY growth rates."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "FY26 Form 10-K Income Statement confirms R&D rose from $12,914M to $18,497M (+43.2%) and SG&A rose from $3,491M to $4,579M (+31.2%), driving total GAAP OpEx up 40.66% (reported as 41%).",
+        "Q4 FY26 GAAP OpEx was $6,794M vs. Q4 guidance of $6,650M ($6.7B), and Non-GAAP OpEx was $5,102M vs. Q4 guidance of $5,000M ($5.0B)."
+      ],
+      "contrary_evidence": [
+        "While OpEx dollar growth (41% GAAP / 42% Non-GAAP) exceeded the high-30% guidance range, FY26 revenue grew 65% YoY to $215,938M, meaning OpEx as a percentage of revenue actually improved from 12.57% in FY25 to 10.69% in FY26."
+      ],
+      "alternative_explanations": [
+        "Accelerated engineering hiring, tape-out costs, and infrastructure compute consumption for the Vera Rubin and Blackwell Ultra product cycles in 2H FY26.",
+        "Higher variable compensation and stock-based compensation ($6,386M in FY26 vs. $4,737M in FY25, up 34.8%) tied to outsized revenue and stock performance."
+      ],
+      "limitations_and_uncertainty": "Guidance in Q2 FY26 is forward-looking under PSLRA safe harbor; crossing from ~39% to 40.7% GAAP / 42.5% Non-GAAP reflects aggressive R&D reinvestment during a hyper-growth revenue cycle rather than cost-control failure."
+    }
+  },
+  {
+    "comparison_id": "CMP-NVDA-002",
+    "company": "NVIDIA",
+    "title": "Non-GAAP Stock-Based Compensation (SBC) Methodology Shift & Historical Restatement",
+    "category": "Verified numerical mismatch",
+    "severity": "High (Cross-Document Comparability Alert)",
+    "baseline_period": "Q4 FY26",
+    "target_period": "Q1 FY27",
+    "statement_origin": {
+      "speaker": "Non-GAAP Measures Disclosure (Q4 FY26 Release)",
+      "document_title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026",
+      "source_id": "SRC-NVDA-Q4FY26-PR",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/",
+      "publication_date": "2026-02-25",
+      "reporting_period": "Q4 FY26",
+      "exact_excerpt": "For the quarter, GAAP and non-GAAP gross margins were 75.0% and 75.2%, respectively... Non-GAAP operating expenses $5,102 [million]... Non-GAAP net income $39,552 [million]... Diluted earnings per share Non-GAAP $1.62."
+    },
+    "follow_up_statement": {
+      "speaker": "Non-GAAP Measures Disclosure & Summary Table (Q1 FY27 Release)",
+      "document_title": "NVIDIA Announces Financial Results for First Quarter Fiscal 2027",
+      "source_id": "SRC-NVDA-Q1FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "publication_date": "2026-05-20",
+      "reporting_period": "Q1 FY27",
+      "exact_excerpt": "Beginning in the first quarter of fiscal 2027, NVIDIA's non-GAAP financial measures no longer exclude stock-based compensation expense. The historical non-GAAP financial information presented has been updated to include stock-based compensation expense. [Q4 FY26 column in Q1 FY27 table: Non-GAAP Gross margin 75.1%, Non-GAAP Operating expenses $6,666M, Non-GAAP Net income $38,969M, Non-GAAP Diluted EPS $1.59]."
+    },
+    "metric_verification": {
+      "metric_name": "Q4 FY26 Non-GAAP Operating Expenses ($M) Across Consecutive Releases",
+      "units": "$ in millions",
+      "baseline_value": 5102.0,
+      "baseline_label": "Q4 FY26 Non-GAAP OpEx as originally reported on Feb 25, 2026 ($5,102M)",
+      "reported_value": 6666.0,
+      "reported_label": "Q4 FY26 Non-GAAP OpEx as restated in Q1 FY27 release on May 20, 2026 ($6,666M)",
+      "raw_inputs": {
+        "q4fy26_nongaap_opex_orig_m": 5102.0,
+        "q4fy26_nongaap_opex_restated_m": 6666.0,
+        "q4fy26_opex_sbc_m": 1564.0,
+        "q4fy26_nongaap_eps_orig": 1.62,
+        "q4fy26_nongaap_eps_restated": 1.59
+      },
+      "python_formula": "opex_delta_m = 6666.0 - 5102.0  # = +$1,564.0M (exact Q4 OpEx SBC expense)\nopex_pct_diff = ((6666.0 - 5102.0) / 5102.0) * 100  # = +30.6546%\neps_delta = 1.59 - 1.62  # = -$0.03 per diluted share",
+      "calculated_delta": "+$1,564.0M (+30.65%) higher Non-GAAP OpEx; -$583M lower Non-GAAP Net Income; -$0.03 lower Non-GAAP EPS for the identical Q4 FY26 period",
+      "rule_triggered": "RULE_NUMERICAL_MISMATCH: Identical historical period (Q4 FY26) exhibits a $1,564M (+30.65%) numerical discrepancy in Non-GAAP Operating Expenses and $0.03 EPS difference between the Q4 FY26 release and the Q1 FY27 comparative column due to the accounting policy transition to include Stock-Based Compensation (SBC) in Non-GAAP metrics."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.91,
+      "keyword_overlap_score": 0.52,
+      "why_semantic_wins": "Automated data scrapers that ingest historical Non-GAAP tables without reading footnote disclosures flag a 30.65% jump in Q4 FY26 Non-GAAP OpEx or miscalculate Q1 FY27 QoQ Non-GAAP OpEx growth as +46.0% ($7,449M vs $5,102M) instead of the true like-for-like +11.75% ($7,449M vs $6,666M). ARGUS links the footnote policy statement to the restated comparative table."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "In Q4 FY26 GAAP-to-Non-GAAP reconciliation, Stock-Based Compensation deducted from Operating Expenses was exactly $1,564M ($1,217M R&D + $347M SG&A). Adding $1,564M back to $5,102M equals $6,666M exactly.",
+        "Similarly, Q2 FY26 Non-GAAP OpEx was restated in the Q2 FY27 release from $3,795M to $5,361M (a difference of $1,566M, matching Q2 FY26 OpEx SBC of $1,566M)."
+      ],
+      "contrary_evidence": [
+        "Management transparently pre-announced this transition in the Q4 FY26 outlook section on Feb 25, 2026 and restated prior periods in Q1 FY27 and Q2 FY27 tables for like-for-like comparability."
+      ],
+      "alternative_explanations": [
+        "Intentional governance enhancement: Including SBC in Non-GAAP aligns with institutional investor and SEC feedback that stock-based compensation is a true economic cost."
+      ],
+      "limitations_and_uncertainty": "Analysts pulling unadjusted time-series data from legacy spreadsheets risk severe modeling errors if pre-FY27 Non-GAAP figures (excluding SBC) are spliced directly onto FY27 Non-GAAP figures (including SBC)."
+    }
+  },
+  {
+    "comparison_id": "CMP-NVDA-003",
+    "company": "NVIDIA",
+    "title": "Q2 FY27 'Compute is Revenue' & Profitable Demand Narrative vs. Working Capital & Operating Cash Flow Divergence",
+    "category": "Potential narrative\u2013metric divergence",
+    "severity": "High (Primary Research Lead for Equity Analysts)",
+    "baseline_period": "Q1 FY27",
+    "target_period": "Q2 FY27",
+    "statement_origin": {
+      "speaker": "Jensen Huang, Founder and CEO of NVIDIA",
+      "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027",
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "exact_excerpt": "\u201cAI has reached its inflection point. It's doing useful work. Its tokens are productive and profitable. Now, compute is revenue,\u201d said Jensen Huang, founder and CEO of NVIDIA. \u201cAnd demand is accelerating... The AI infrastructure buildout is at full steam. Vera Rubin, now in full production, was built to power exactly this moment.\u201d"
+    },
+    "follow_up_statement": {
+      "speaker": "Condensed Consolidated Balance Sheets & Statements of Cash Flows (Q2 FY27)",
+      "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027",
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "exact_excerpt": "Three Months Ended July 26, 2026: Revenue $96,221M (up 18% Q/Q); Operating income $63,734M (up 19% Q/Q). Cash flows from operating activities: Changes in Accounts receivable $(22,346)M; Net cash provided by operating activities $24,077M (vs. $50,344M in Q1 FY27). Balance Sheet: Accounts receivable, net $63,059M (vs. $40,710M in Q1 FY27)."
+    },
+    "metric_verification": {
+      "metric_name": "Sequential Revenue Growth (%) vs. Operating Cash Flow Growth (%) & Accounts Receivable Surge",
+      "units": "% QoQ and $ in millions",
+      "baseline_value": 17.89,
+      "baseline_label": "Q2 FY27 Sequential Revenue Growth (+17.89% QoQ, +$14,606M) & Operating Income Growth (+19.05% QoQ)",
+      "reported_value": -52.17,
+      "reported_label": "Q2 FY27 Operating Cash Flow QoQ (-52.17%, from $50,344M to $24,077M) & FCF QoQ (-56.05%, from $48,554M to $21,341M)",
+      "raw_inputs": {
+        "q1fy27_rev_m": 81615.0,
+        "q2fy27_rev_m": 96221.0,
+        "q1fy27_ocf_m": 50344.0,
+        "q2fy27_ocf_m": 24077.0,
+        "q1fy27_fcf_m": 48554.0,
+        "q2fy27_fcf_m": 21341.0,
+        "q1fy27_ar_m": 40710.0,
+        "q2fy27_ar_m": 63059.0
+      },
+      "python_formula": "rev_qoq_pct = ((96221 - 81615) / 81615) * 100  # = +17.8962%\nocf_qoq_pct = ((24077 - 50344) / 50344) * 100  # = -52.1750%\nar_qoq_pct = ((63059 - 40710) / 40710) * 100   # = +54.8981% (+$22,349M)\ndso_q1 = (40710 / 81615) * 91  # = 45.39 days\ndso_q2 = (63059 / 96221) * 91  # = 59.64 days (+14.25 days)",
+      "calculated_delta": "70.07 percentage-point divergence between sequential Revenue growth (+17.90% QoQ) and Operating Cash Flow contraction (-52.18% QoQ), driven by a +54.90% (+$22,349M) single-quarter jump in Accounts Receivable (DSO expanding from 45.4 to 59.6 days).",
+      "rule_triggered": "RULE_NARRATIVE_DIVERGENCE: Strongly positive commercial velocity narrative ('compute is revenue', 'Vera Rubin in full production') coincides with a >50% sequential drop in Operating Cash Flow and Free Cash Flow as Accounts Receivable grew 3.07x faster than Revenue (+54.9% vs +17.9% QoQ)."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.84,
+      "keyword_overlap_score": 0.19,
+      "why_semantic_wins": "CEO narrative uses high-level economic metaphors ('tokens are productive and profitable. Now, compute is revenue', 'full production'), containing zero overlap with cash-flow accounting terms ('accounts receivable', 'operating cash flows', 'working capital'). Semantic mapping links revenue-monetization claims to cash-conversion and receivables quality metrics."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "Accounts Receivable rose by $22,349M on the Balance Sheet (from $40,710M at April 26, 2026 to $63,059M at July 26, 2026), exceeding the total sequential revenue increase of $14,606M.",
+        "Free Cash Flow dropped from $48,554M in Q1 FY27 to $21,341M in Q2 FY27 (-56.05% QoQ), even as GAAP Net Income rose to $59,688M."
+      ],
+      "contrary_evidence": [
+        "First-half (6M FY27) Operating Cash Flow remained up 74.0% YoY ($74,421M in 1H FY27 vs. $42,779M in 1H FY26), and 1H Free Cash Flow was $69,895M (+76.6% YoY).",
+        "Q2 FY27 Operating Cash Flow ($24,077M) was still up 56.7% YoY compared to Q2 FY26 ($15,365M)."
+      ],
+      "alternative_explanations": [
+        "Back-end loaded shipment linearity: Vera Rubin rack-scale systems ramped into full production late in Q2 FY27, causing a high proportion of quarterly billings to occur in the final month of the quarter (collected in Q3 FY27).",
+        "Quarterly cash tax payment timing and customer concentration among hyperscale cloud providers with standard net-60 payment terms."
+      ],
+      "limitations_and_uncertainty": "A divergence between accrual revenue and quarterly operating cash flow is a classic fundamental research lead\u2014not evidence of improper revenue recognition. Analysts should monitor Q3 FY27 cash collections and DSO normalization."
+    }
+  },
+  {
+    "comparison_id": "CMP-NVDA-004",
+    "company": "NVIDIA",
+    "title": "Blackwell Ultra & Vera Rubin Generational Transitions vs. Gross Margin Trajectory (Q2 FY26 \u2013 Q2 FY27)",
+    "category": "Potential narrative\u2013metric divergence",
+    "severity": "Moderate (Margin Ceiling & Guidance Compression Lead)",
+    "baseline_period": "Q4 FY26",
+    "target_period": "Q2 FY27 & Q3 FY27 Outlook",
+    "statement_origin": {
+      "speaker": "Jensen Huang, Founder and CEO of NVIDIA",
+      "document_title": "NVIDIA Q4 FY26 & Q2 FY27 Earnings Releases",
+      "source_id": "SRC-NVDA-Q4FY26-PR",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/",
+      "publication_date": "2026-02-25",
+      "reporting_period": "Q4 FY26 \u2013 Q2 FY27",
+      "exact_excerpt": "\u201cGrace Blackwell with NVLink is the king of inference today \u2014 delivering an order-of-magnitude lower cost per token \u2014 and Vera Rubin will extend that leadership even further... Vera Rubin, now in full production, was built to power exactly this moment.\u201d"
+    },
+    "follow_up_statement": {
+      "speaker": "Q2 FY27 Summary & Q3 FY27 Outlook",
+      "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027",
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "exact_excerpt": "For the quarter [Q2 FY27], GAAP and non-GAAP gross margins were both 75.0% [vs. 74.9% GAAP / 75.0% Non-GAAP in Q1 FY27 and 75.0% GAAP / 75.1% restated Non-GAAP in Q4 FY26]. Outlook for Q3 FY27: GAAP and non-GAAP gross margins are expected to be 74.0%, plus or minus 50 basis points."
+    },
+    "metric_verification": {
+      "metric_name": "GAAP & Non-GAAP Gross Margin (%) Across Architecture Ramps",
+      "units": "% (and basis points)",
+      "baseline_value": 75.0,
+      "baseline_label": "Q4 FY26 \u2013 Q2 FY27 Gross Margin Plateau (75.0% GAAP / 75.0% Non-GAAP)",
+      "reported_value": 74.0,
+      "reported_label": "Q3 FY27 Guided GAAP & Non-GAAP Gross Margin (74.0% \u00b150 bps, -100 bps QoQ)",
+      "raw_inputs": {
+        "q2fy26_gaap_gm": 72.4,
+        "q3fy26_gaap_gm": 73.4,
+        "q4fy26_gaap_gm": 75.0,
+        "q1fy27_gaap_gm": 74.9,
+        "q2fy27_gaap_gm": 75.0,
+        "q3fy27_guided_gm": 74.0
+      },
+      "python_formula": "gm_recovery_fy26 = 75.0 - 72.4  # = +2.6 pts (+260 bps from Q2 FY26 to Q4 FY26)\ngm_plateau_1h27 = 75.0 - 75.0   # = 0.0 pts (flat from Q4 FY26 to Q2 FY27)\ngm_q3fy27_guide_delta = 74.0 - 75.0  # = -1.0 pt (-100 bps sequential compression)",
+      "calculated_delta": "0 bps expansion from Q4 FY26 (75.0%) to Q2 FY27 (75.0%), followed by a -100 bps guided sequential compression to 74.0% in Q3 FY27 as Vera Rubin enters full production.",
+      "rule_triggered": "RULE_NARRATIVE_DIVERGENCE: While management achieved its Q2 FY26 promise to exit FY26 in the mid-70% gross margin range (reaching 75.0% in Q4 FY26), the full-production ramp of Vera Rubin in Q2/Q3 FY27 coincides with a 100 bps guided gross margin step-down (to 74.0%) and a 37.5%QoQ surge in Inventories ($21,403M in Q4 FY26 to $31,575M in Q2 FY27, +47.5% over 6 months)."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.82,
+      "keyword_overlap_score": 0.28,
+      "why_semantic_wins": "Connects qualitative product leadership and full-production ramp claims ('Vera Rubin, now in full production', 'king of inference') with unit-economics, inventory build, and forward gross margin compression."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "Q2 FY26 Outlook stated: 'The company continues to expect to exit the year with non-GAAP gross margins in the mid-70% range.' NVIDIA met this in Q4 FY26 (75.0% GAAP / 75.2% Non-GAAP).",
+        "However, in Q2 FY27, as Vera Rubin ramped into full production, Inventories rose to $31,575M (up from $21,403M at FY26 year-end, +47.5%) and Q3 FY27 gross margin was guided down 100 bps to 74.0%."
+      ],
+      "contrary_evidence": [
+        "Gross profit dollars still expanded 18.0% QoQ in Q2 FY27 to $72,142M (up 113.1% YoY from $33,853M in Q2 FY26).",
+        "A 74.0%\u201375.0% gross margin at a ~$385B+ annualized revenue run-rate remains extraordinarily high by semiconductor hardware standards."
+      ],
+      "alternative_explanations": [
+        "Initial manufacturing yields, warranty reserves, and complex rack-scale BoM (HBM4 memory, co-packaged optics in Spectrum-6) typically dilute gross margins by 100\u2013200 bps during the early quarters of a new architecture ramp (just as Blackwell did in 1H FY26)."
+      ],
+      "limitations_and_uncertainty": "Segment-level gross margins (Data Center vs. Edge Computing vs. Networking) are not separately disclosed in quarterly releases."
+    }
+  },
+  {
+    "comparison_id": "CMP-NVDA-005",
+    "company": "NVIDIA",
+    "title": "AI Infrastructure & Agentic AI Demand Inflection vs. Data Center Revenue Trajectory",
+    "category": "No identified discrepancy",
+    "severity": "Verified Consistent",
+    "baseline_period": "Q3 FY26",
+    "target_period": "Q2 FY27",
+    "statement_origin": {
+      "speaker": "Jensen Huang, Founder and CEO of NVIDIA",
+      "document_title": "NVIDIA Q3 FY26, Q4 FY26, Q1 FY27 & Q2 FY27 Earnings Releases",
+      "source_id": "SRC-NVDA-Q3FY26-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2026",
+      "publication_date": "2025-11-19",
+      "reporting_period": "Q3 FY26 \u2013 Q2 FY27",
+      "exact_excerpt": "Q3 FY26: \u201cBlackwell sales are off the charts, and cloud GPUs are sold out... Compute demand keeps accelerating.\u201d \u2192 Q4 FY26: \u201cComputing demand is growing exponentially \u2014 the agentic AI inflection point has arrived.\u201d \u2192 Q1 FY27: \u201cThe buildout of AI factories \u2014 the largest infrastructure expansion in human history \u2014 is accelerating at extraordinary speed.\u201d \u2192 Q2 FY27: \u201cThe AI infrastructure buildout is at full steam.\u201d"
+    },
+    "follow_up_statement": {
+      "speaker": "Segment Revenue Disclosures (Q2 FY26 \u2013 Q2 FY27)",
+      "document_title": "NVIDIA Q2 FY26 through Q2 FY27 Earnings Releases",
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "exact_excerpt": "Data Center: Second-quarter [FY27] revenue was $89.0 billion, up 18% from the previous quarter [$75.2B in Q1 FY27] and up 117% from a year ago [$41.1B in Q2 FY26]."
+    },
+    "metric_verification": {
+      "metric_name": "Data Center Quarterly Revenue ($M) & YoY Growth Acceleration (%)",
+      "units": "$ in millions and % YoY",
+      "baseline_value": 41100.0,
+      "baseline_label": "Q2 FY26 Data Center Revenue ($41,100M, +56% YoY)",
+      "reported_value": 89000.0,
+      "reported_label": "Q2 FY27 Data Center Revenue ($89,000M, +116.55% exact / +117% reported YoY)",
+      "raw_inputs": {
+        "dc_rev_q2fy26_m": 41100.0,
+        "dc_rev_q3fy26_m": 51200.0,
+        "dc_rev_q4fy26_m": 62300.0,
+        "dc_rev_q1fy27_m": 75200.0,
+        "dc_rev_q2fy27_m": 89000.0
+      },
+      "python_formula": "dc_yoy_pct = ((89000 - 41100) / 41100) * 100  # = +116.5450% (117% reported)\ndc_qoq_q3 = ((51200 - 41100) / 41100) * 100   # = +24.57%\ndc_qoq_q4 = ((62300 - 51200) / 51200) * 100   # = +21.68%\ndc_qoq_q1 = ((75200 - 62300) / 62300) * 100   # = +20.71%\ndc_qoq_q2 = ((89000 - 75200) / 75200) * 100   # = +18.35%",
+      "calculated_delta": "+$47,900M (+116.55% YoY) expansion in quarterly Data Center revenue; YoY growth rate accelerated from +56% (Q2 FY26) \u2192 +66% (Q3 FY26) \u2192 +75% (Q4 FY26) \u2192 +92% (Q1 FY27) \u2192 +117% (Q2 FY27).",
+      "rule_triggered": "RULE_NO_DISCREPANCY: Management's qualitative claims of accelerating demand across 4 consecutive quarters are quantitatively corroborated by accelerating year-over-year Data Center revenue growth (from 56% YoY in Q2 FY26 to 117% YoY in Q2 FY27) and sequential quarterly revenue beats against every prior outlook."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.93,
+      "keyword_overlap_score": 0.34,
+      "why_semantic_wins": "Tracks evolving management terminology across four quarters ('virtuous cycle of AI' \u2192 'agentic AI inflection point' \u2192 'AI factories' \u2192 'tokens are productive and profitable') and binds all four narratives to the underlying Data Center revenue series."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "Every single quarterly revenue outlook was exceeded: Q3 FY26 guided $54.0B vs actual $57.0B (+5.6% beat); Q4 FY26 guided $65.0B vs actual $68.1B (+4.8% beat); Q1 FY27 guided $78.0B vs actual $81.6B (+4.6% beat); Q2 FY27 guided $91.0B vs actual $96.2B (+5.7% beat).",
+        "Data Center share of total NVIDIA revenue increased from 87.9% in Q2 FY26 ($41.1B / $46.74B) to 92.5% in Q2 FY27 ($89.0B / $96.22B)."
+      ],
+      "contrary_evidence": [],
+      "alternative_explanations": [
+        "Customer financing initiatives and sovereign AI partnerships helped sustain top-line acceleration alongside hyperscaler capex."
+      ],
+      "limitations_and_uncertainty": "While top-line revenue growth corroborates demand claims, customer concentration among top cloud service providers remains high."
+    }
+  },
+  {
+    "comparison_id": "CMP-NVDA-006",
+    "company": "NVIDIA",
+    "title": "Shareholder Capital Return Commitments & Dividend Expansion Verification",
+    "category": "No identified discrepancy",
+    "severity": "Verified Consistent",
+    "baseline_period": "Q4 FY26",
+    "target_period": "Q1 FY27 & Q2 FY27",
+    "statement_origin": {
+      "speaker": "Capital Return Disclosures (Q4 FY26, Q1 FY27, Q2 FY27 Releases)",
+      "document_title": "NVIDIA Q4 FY26, Q1 FY27, and Q2 FY27 Earnings Releases",
+      "source_id": "SRC-NVDA-Q1FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "publication_date": "2026-05-20",
+      "reporting_period": "Q1 FY27 \u2013 Q2 FY27",
+      "exact_excerpt": "Q1 FY27: \u201cDuring the first quarter of fiscal 2027, NVIDIA returned a record level of approximately $20.0 billion to shareholders... NVIDIA is increasing its quarterly cash dividend from $0.01 per share to $0.25 per share.\u201d \u2192 Q2 FY27: \u201cDuring the second quarter of fiscal 2027, NVIDIA returned approximately $26.0 billion to shareholders in the form of shares repurchased and cash dividends.\u201d"
+    },
+    "follow_up_statement": {
+      "speaker": "Condensed Consolidated Statements of Cash Flows (Q1 FY27 & Q2 FY27)",
+      "document_title": "NVIDIA Q2 FY27 Earnings Release Cash Flow Statement",
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "exact_excerpt": "Financing Activities (Three Months Ended July 26, 2026): Payments related to repurchases of common stock $(19,732)M; Dividends paid $(6,047)M. Six Months Ended July 26, 2026: Repurchases $(39,044)M; Dividends paid $(6,290)M."
+    },
+    "metric_verification": {
+      "metric_name": "Share Repurchases + Cash Dividends Paid ($M)",
+      "units": "$ in millions",
+      "baseline_value": 26000.0,
+      "baseline_label": "Narrative Claim: 'approximately $26.0 billion' returned in Q2 FY27 ('~$20.0 billion' in Q1 FY27)",
+      "reported_value": 25779.0,
+      "reported_label": "Cash Flow Statement Actuals: $19,732M buybacks + $6,047M dividends = $25,779M ($25.78B) in Q2 FY27; $19,312M + $243M = $19,555M ($19.56B) in Q1 FY27",
+      "raw_inputs": {
+        "q1fy27_buybacks_m": 19312.0,
+        "q1fy27_dividends_m": 243.0,
+        "q2fy27_buybacks_m": 19732.0,
+        "q2fy27_dividends_m": 6047.0,
+        "h1fy27_buybacks_m": 39044.0,
+        "h1fy27_dividends_m": 6290.0
+      },
+      "python_formula": "q1_return_m = 19312 + 243  # = $19,555M (~$19.6B vs '~$20.0B' narrative, incl. trade-date vs settlement timing)\nq2_return_m = 19732 + 6047  # = $25,779M (~$25.8B vs '~$26.0B' narrative)\nh1_return_m = 39044 + 6290  # = $45,334M ($45.33B returned in 6 months)",
+      "calculated_delta": "$221M (0.85%) difference between narrative 'approximately $26.0 billion' and cash-settled financing outflows ($25,779M), well within standard rounding and trade-date settlement tolerances.",
+      "rule_triggered": "RULE_NO_DISCREPANCY: Cash flow financing line items confirm $19,732M in share repurchases and $6,047M in cash dividends ($25.78B total) in Q2 FY27, and confirm the 25x dividend increase from $243M/quarter ($0.01/sh) in Q1 FY27 to $6,047M/quarter ($0.25/sh) in Q2 FY27."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.89,
+      "keyword_overlap_score": 0.61,
+      "why_semantic_wins": "Both semantic and keyword matchers link 'shares repurchased and cash dividends' to the Cash Flows from Financing Activities lines, though semantic matching automatically aggregates the two separate cash flow rows ('Payments related to repurchases of common stock' + 'Dividends paid')."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "Dividends paid jumped from $243M in Q1 FY27 to $6,047M in Q2 FY27 (24.88x increase), directly verifying the dividend hike from $0.01/share to $0.25/share across ~24.19B basic shares.",
+        "First-half FY27 total shareholder return ($45,334M) already surpassed full-year FY26 total shareholder return ($41,060M)."
+      ],
+      "contrary_evidence": [
+        "Note that in Q2 FY27, Free Cash Flow was $21,341M while shareholder returns were $25,779M, funded alongside $24,896M in net proceeds from new debt issuance."
+      ],
+      "alternative_explanations": [
+        "Small variance ($25.78B cash flow vs ~$26.0B narrative) reflects standard 1\u20132 day trade-date vs. cash-settlement timing at quarter-end."
+      ],
+      "limitations_and_uncertainty": "None; cash flow statement and balance sheet authorization roll-forward ($38.5B + $80.0B new authorization - ~$19.7B Q2 repurchases = ~$98.8B / ~$99.0B remaining) reconcile cleanly."
+    }
+  },
+  {
+    "comparison_id": "CMP-NVDA-007",
+    "company": "NVIDIA",
+    "title": "Hyperscale vs. ACIE Sub-Market Revenue Split & $500B Third-Party Compute Financing Platforms",
+    "category": "Insufficient evidence",
+    "severity": "Disclosure Gap / Unverifiable Sub-Segment Breakdown",
+    "baseline_period": "Q1 FY27",
+    "target_period": "Q2 FY27",
+    "statement_origin": {
+      "speaker": "Segment Reporting Framework & Strategic Highlights (Q1 FY27 & Q2 FY27)",
+      "document_title": "NVIDIA Q1 FY27 & Q2 FY27 Earnings Releases",
+      "source_id": "SRC-NVDA-Q1FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "publication_date": "2026-05-20",
+      "reporting_period": "Q1 FY27 \u2013 Q2 FY27",
+      "exact_excerpt": "Q1 FY27: \u201cNVIDIA is transitioning to a new reporting framework that better reflects its current and future growth drivers. NVIDIA will have two market platforms \u2014 Data Center and Edge Computing. Within Data Center, NVIDIA will report two sub-markets, Hyperscale and ACIE, which incorporates AI Clouds, Industrial and Enterprise.\u201d \u2192 Q2 FY27: \u201cAnnounced strategic partnerships to establish independent compute financing platforms with Apollo, BlackRock, Blackstone, Brookfield, Goldman Sachs and KKR to mobilize over $500 billion of third-party capital for the buildout of AI infrastructure over time, subject to definitive agreements.\u201d"
+    },
+    "follow_up_statement": {
+      "speaker": "Q2 FY27 Condensed Consolidated Financial Statements",
+      "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027",
+      "source_id": "SRC-NVDA-Q2FY27-PR",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/",
+      "publication_date": "2026-08-26",
+      "reporting_period": "Q2 FY27",
+      "exact_excerpt": "Highlights \u2014 Data Center: Second-quarter revenue was $89.0 billion, up 18% from the previous quarter and up 117% from a year ago. Edge Computing: Second-quarter Edge Computing revenue was $7.2 billion, up 13% from the previous quarter and up 27% from a year ago. [Note: Exact dollar split between Hyperscale and ACIE sub-markets and committed binding capital under the $500B financing initiative are not tabulated in the Q2 FY27 earnings release]."
+    },
+    "metric_verification": {
+      "metric_name": "Data Center Sub-Market Split (Hyperscale $M vs. ACIE $M) & Binding Financing Commitments ($M)",
+      "units": "$ in millions",
+      "baseline_value": null,
+      "baseline_label": "Hyperscale vs. ACIE Sub-Market Dollar Split (Not tabulated in Q2 FY27 earnings release)",
+      "reported_value": 89000.0,
+      "reported_label": "Aggregate Data Center Revenue ($89,000M reported; sub-market dollar breakdown pending Form 10-Q footnote)",
+      "raw_inputs": {
+        "q2fy27_total_dc_rev_m": 89000.0,
+        "q2fy27_edge_rev_m": 7200.0,
+        "hyperscale_rev_m": null,
+        "acie_rev_m": null,
+        "binding_third_party_financing_m": null
+      },
+      "python_formula": "# Deterministic check requires both Hyperscale and ACIE sub-market figures:\nhyperscale_rev = None  # Not disclosed in Q2 FY27 press release text/tables\nacie_rev = None        # Not disclosed in Q2 FY27 press release text/tables\nif hyperscale_rev is None or acie_rev is None:\n    status = 'INSUFFICIENT_EVIDENCE'",
+      "calculated_delta": "N/A \u2014 Sub-market dollar disaggregation (Hyperscale vs. ACIE) and binding commitments for the $500B financing platforms ('subject to definitive agreements') are not quantified in the earnings release.",
+      "rule_triggered": "RULE_INSUFFICIENT_EVIDENCE: Source documents announce the new Hyperscale / ACIE sub-market structure and the >$500B third-party compute financing partnerships, but the press release tables only report aggregate Data Center ($89.0B) and Edge Computing ($7.2B) revenue, and note that the financing platforms remain 'subject to definitive agreements'."
+    },
+    "matching_metadata": {
+      "ai_semantic_score": 0.79,
+      "keyword_overlap_score": 0.22,
+      "why_semantic_wins": "Identifies that the Q1 FY27 promise to report 'two sub-markets, Hyperscale and ACIE' and the Q2 FY27 '$500 billion of third-party capital' announcement lack corresponding tabular disaggregation in the Q2 FY27 earnings release."
+    },
+    "evidence_assessment": {
+      "supporting_evidence": [
+        "Q1 FY27 release provided legacy sub-market figures (Compute $60.4B, Networking $14.8B = $75.2B Data Center), while Q2 FY27 release reported aggregate Data Center ($89.0B) and Edge Computing ($7.2B).",
+        "Q2 FY27 Balance Sheet shows Non-marketable securities increased from $22,251M (Jan 25, 2026) to $43,364M (Apr 26, 2026) to $51,157M (Jul 26, 2026), and Marketable equity securities rose from $12,886M to $42,783M, showing substantial balance-sheet ecosystem investments."
+      ],
+      "contrary_evidence": [],
+      "alternative_explanations": [
+        "Detailed segment and disaggregation footnotes are typically published in Note 14/15 of the quarterly Form 10-Q and CFO Commentary rather than the headline earnings release tables.",
+        "The $500B private-capital initiative with Apollo, BlackRock, Blackstone, Brookfield, Goldman Sachs, and KKR is explicitly disclosed as a multi-year mobilization target 'subject to definitive agreements'."
+      ],
+      "limitations_and_uncertainty": "Requires cross-checking the full Q2 FY27 Form 10-Q Segment Reporting footnote and subsequent 8-K filings as definitive financing agreements are executed."
+    }
+  }
+]

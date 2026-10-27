@@ -1,0 +1,98 @@
+[
+  {
+    "pair_id": "EVAL-01",
+    "statement_a": "Full year fiscal 2026 operating expense growth is expected to be in the high-30% range.",
+    "statement_b": "Fiscal 2026 Summary: GAAP Operating expenses $23,076M vs FY25 $16,405M, Y/Y 41%. Non-GAAP Operating expenses $16,694M vs $11,716M, Y/Y 42%.",
+    "ground_truth_match": 1,
+    "relationship_type": "Guidance vs. Realized Metric (Paraphrased Range vs. Tabular %)",
+    "notes": "True link: 'high-30% range' vs '41% / 42% Y/Y'. Keyword overlap is low because 'growth' and 'high-30% range' do not appear in the table."
+  },
+  {
+    "pair_id": "EVAL-02",
+    "statement_a": "AI has reached its inflection point. It's doing useful work. Its tokens are productive and profitable. Now, compute is revenue.",
+    "statement_b": "Cash flows from operating activities: Accounts receivable change $(22,346)M; Net cash provided by operating activities $24,077M vs $50,344M in Q1 FY27.",
+    "ground_truth_match": 1,
+    "relationship_type": "Monetization Narrative vs. Cash Conversion / Receivables Quality",
+    "notes": "True analytical link: CEO monetization claim vs cash flow / working capital conversion. Zero shared financial keywords."
+  },
+  {
+    "pair_id": "EVAL-03",
+    "statement_a": "The company continues to expect to exit the year with non-GAAP gross margins in the mid-70% range.",
+    "statement_b": "For the fourth quarter ended January 25, 2026, GAAP and non-GAAP gross margins were 75.0% and 75.2%, respectively.",
+    "ground_truth_match": 1,
+    "relationship_type": "Year-End Margin Target vs. Q4 Realized Margin",
+    "notes": "True link: 'exit the year' + 'mid-70% range' maps to 'fourth quarter' + '75.0% and 75.2%'."
+  },
+  {
+    "pair_id": "EVAL-04",
+    "statement_a": "Beginning in the first quarter of fiscal 2027, NVIDIA's non-GAAP financial measures no longer exclude stock-based compensation expense.",
+    "statement_b": "Q1 FY27 Summary Table \u2014 Q4 FY26 Column: Non-GAAP Operating expenses $6,666M (updated from $5,102M reported in Q4 FY26 release).",
+    "ground_truth_match": 1,
+    "relationship_type": "Accounting Policy Footnote vs. Restated Historical Table",
+    "notes": "True link: explains why Q4 FY26 Non-GAAP OpEx changed by $1,564M."
+  },
+  {
+    "pair_id": "EVAL-05",
+    "statement_a": "Blackwell sales are off the charts, and cloud GPUs are sold out. Compute demand keeps accelerating and compounding across training and inference.",
+    "statement_b": "Data Center: Third-quarter revenue was a record $51.2 billion, up 25% from the previous quarter and up 66% from a year ago.",
+    "ground_truth_match": 1,
+    "relationship_type": "Demand Narrative vs. Segment Revenue Growth",
+    "notes": "True link: qualitative demand acceleration vs Data Center top-line growth."
+  },
+  {
+    "pair_id": "EVAL-06",
+    "statement_a": "During the second quarter of fiscal 2027, NVIDIA returned approximately $26.0 billion to shareholders in the form of shares repurchased and cash dividends.",
+    "statement_b": "Cash flows from financing activities: Payments related to repurchases of common stock $(19,732)M; Dividends paid $(6,047)M.",
+    "ground_truth_match": 1,
+    "relationship_type": "Capital Return Summary vs. Cash Flow Financing Lines",
+    "notes": "True link: both semantic and keyword matchers should catch 'repurchases' and 'dividends'."
+  },
+  {
+    "pair_id": "EVAL-07",
+    "statement_a": "Vera Rubin, now in full production, was built to power exactly this moment... delivering up to a 10x reduction in inference token cost.",
+    "statement_b": "Q3 FY27 Outlook: GAAP and non-GAAP gross margins are expected to be 74.0%, plus or minus 50 basis points [down from 75.0% in Q2 FY27]; Inventories rose to $31,575M.",
+    "ground_truth_match": 1,
+    "relationship_type": "New Architecture Ramp vs. Forward Margin & Inventory Impact",
+    "notes": "True link: production ramp of new architecture vs gross margin dilution and inventory build."
+  },
+  {
+    "pair_id": "EVAL-08",
+    "statement_a": "Within Data Center, NVIDIA will report two sub-markets, Hyperscale and ACIE, which incorporates AI Clouds, Industrial and Enterprise.",
+    "statement_b": "Q2 FY27 Highlights: Data Center revenue was $89.0 billion; Edge Computing revenue was $7.2 billion (sub-market dollar split omitted).",
+    "ground_truth_match": 1,
+    "relationship_type": "Reporting Framework Commitment vs. Subsequent Disclosure Completeness",
+    "notes": "True link: identifies missing sub-market disaggregation in Q2 press release."
+  },
+  {
+    "pair_id": "EVAL-09",
+    "statement_a": "Fourth-quarter Gaming revenue was $3.7 billion, up 47% from a year ago, driven by strong Blackwell demand, and down 13% from the previous quarter.",
+    "statement_b": "GAAP Income tax expense for the fourth quarter was $7,437 million compared with $3,126 million in the prior year.",
+    "ground_truth_match": 0,
+    "relationship_type": "Unrelated Metrics (Gaming Revenue vs. Income Tax Expense)",
+    "notes": "Negative pair: shares words 'fourth-quarter', 'million/billion', 'year', which can trick naive keyword overlap."
+  },
+  {
+    "pair_id": "EVAL-10",
+    "statement_a": "Fourth-quarter Automotive revenue was $604 million, up 2% from the previous quarter and up 6% from a year ago.",
+    "statement_b": "Fourth-quarter Professional Visualization revenue was $1.3 billion, up 74% from the previous quarter and up 159% from a year ago.",
+    "ground_truth_match": 0,
+    "relationship_type": "Different Segments (Automotive vs. ProViz with identical sentence template)",
+    "notes": "Hard negative pair for keyword baseline! Identical boilerplate phrasing ('Fourth-quarter ... revenue was ... up ... from the previous quarter and up ... from a year ago') causes high keyword overlap (false positive) if domain entities are not distinguished."
+  },
+  {
+    "pair_id": "EVAL-11",
+    "statement_a": "NVIDIA will pay its next quarterly cash dividend of $0.01 per share on April 1, 2026, to all shareholders of record on March 11, 2026.",
+    "statement_b": "Fourth-quarter Data Center revenue was a record $62.3 billion, up 22% from the previous quarter and up 75% from a year ago.",
+    "ground_truth_match": 0,
+    "relationship_type": "Unrelated (Dividend Record Date vs. Data Center Revenue)",
+    "notes": "Negative pair: shares 'quarter' and 'NVIDIA'."
+  },
+  {
+    "pair_id": "EVAL-12",
+    "statement_a": "Second-quarter Automotive revenue was $586 million, up 3% from the previous quarter and up 69% from a year ago.",
+    "statement_b": "Second-quarter Gaming revenue was $4.3 billion, up 14% from the previous quarter and up 49% from a year ago.",
+    "ground_truth_match": 0,
+    "relationship_type": "Different Segments (Q2 Automotive vs. Q2 Gaming with identical sentence template)",
+    "notes": "Hard negative pair for keyword baseline! Shares 'Second-quarter', 'revenue was', 'up', 'from the previous quarter and up', 'from a year ago'."
+  }
+]

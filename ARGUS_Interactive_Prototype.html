@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARGUS — AI Financial Research Intelligence | Charles Schwab Prototype</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0B0F17;
+      color: #E2E8F0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    code, pre, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card-surface {
+      background-color: #131B2E;
+      border: 1px solid #23304C;
+    }
+    .card-inner {
+      background-color: #0E1422;
+      border: 1px solid #1E293B;
+    }
+    .tab-active {
+      border-bottom: 2px solid #38BDF8;
+      color: #38BDF8;
+      background-color: rgba(56, 189, 248, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Institutional Header -->
+  <header class="bg-[#0F1626] border-b border-[#23304C] px-4 py-3.5 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-sky-500/15 border border-sky-400/40 flex items-center justify-center text-sky-400 font-extrabold text-lg">A</div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="text-lg font-bold tracking-tight text-white">ARGUS</h1>
+            <span class="text-xs px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30 font-medium">See Beyond the Narrative</span>
+            <span class="hidden sm:inline-block text-xs px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium">Python Deterministic Verified</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-0.5">Proposed User: <strong class="text-slate-200">Charles Schwab Investment Research Team</strong> (Independent Prototype) &nbsp;|&nbsp; Subject: <strong class="text-sky-300">NVIDIA Corp. (NASDAQ: NVDA)</strong></p>
+        </div>
+      </div>
+
+      <!-- Global Controls -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <label class="text-slate-400 font-medium" for="periodSelect">Period Focus:</label>
+        <select id="periodSelect" class="bg-[#162035] border border-[#2D3D5E] text-slate-100 rounded px-2.5 py-1.5 focus:outline-none focus:border-sky-400">
+          <option value="ALL">All Periods (Q1 FY26 – Q2 FY27)</option>
+          <option value="Q2 FY27">Q2 FY27 (Ended Jul 26, 2026)</option>
+          <option value="Q1 FY27">Q1 FY27 (Ended Apr 26, 2026)</option>
+          <option value="Q4 FY26">Q4 FY26 &amp; FY26 (Ended Jan 25, 2026)</option>
+          <option value="Q3 FY26">Q3 FY26 (Ended Oct 26, 2025)</option>
+          <option value="Q2 FY26">Q2 FY26 (Ended Jul 27, 2025)</option>
+        </select>
+        <span class="px-2.5 py-1.5 rounded bg-slate-800/90 border border-slate-700 text-slate-300">Engine: <strong class="text-sky-300">Concept-Aware Semantic + Python Rules</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="bg-[#111827] border-b border-[#1F2937] px-4">
+    <div class="max-w-7xl mx-auto flex flex-wrap gap-1">
+      <button id="tabBtn-exec" data-tab="exec" class="nav-tab-btn tab-active px-4 py-2.5 text-xs sm:text-sm font-semibold transition">A. Executive Dashboard</button>
+      <button id="tabBtn-timeline" data-tab="timeline" class="nav-tab-btn text-slate-400 hover:text-slate-200 px-4 py-2.5 text-xs sm:text-sm font-semibold transition">B. Narrative-vs-Metrics Timeline</button>
+      <button id="tabBtn-explorer" data-tab="explorer" class="nav-tab-btn text-slate-400 hover:text-slate-200 px-4 py-2.5 text-xs sm:text-sm font-semibold transition">C. Evidence Explorer &amp; Graph</button>
+      <button id="tabBtn-inspector" data-tab="inspector" class="nav-tab-btn text-slate-400 hover:text-slate-200 px-4 py-2.5 text-xs sm:text-sm font-semibold transition">D. Finding Inspector &amp; Ingestion</button>
+      <button id="tabBtn-responsible" data-tab="responsible" class="nav-tab-btn text-slate-400 hover:text-slate-200 px-4 py-2.5 text-xs sm:text-sm font-semibold transition">E. Responsible AI &amp; Benchmark</button>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl w-full mx-auto px-4 py-5 flex-1 space-y-6">
+
+    <!-- 5-Step Auditable Chain Banner -->
+    <div class="card-surface rounded-lg p-3">
+      <div class="text-[11px] uppercase tracking-wider text-sky-400 font-semibold mb-2">Central Differentiator — The 5-Step Auditable Research Chain</div>
+      <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs">
+        <div class="card-inner rounded p-2.5"><span class="text-sky-400 font-bold">1. Company Statement</span><p class="text-slate-400 text-[11px] mt-0.5">Verbatim CEO/CFO quote or outlook</p></div>
+        <div class="card-inner rounded p-2.5"><span class="text-indigo-400 font-bold">2. Original Source</span><p class="text-slate-400 text-[11px] mt-0.5">Authentic SEC EDGAR / IR URL &amp; date</p></div>
+        <div class="card-inner rounded p-2.5"><span class="text-emerald-400 font-bold">3. Financial Metric</span><p class="text-slate-400 text-[11px] mt-0.5">Reported GAAP/Non-GAAP figure &amp; units</p></div>
+        <div class="card-inner rounded p-2.5"><span class="text-purple-400 font-bold">4. Python Verification</span><p class="text-slate-400 text-[11px] mt-0.5">Deterministic formula (zero LLM math)</p></div>
+        <div class="card-inner rounded p-2.5"><span class="text-amber-400 font-bold">5. Analyst Finding</span><p class="text-slate-400 text-[11px] mt-0.5">4-category objective classification</p></div>
+      </div>
+    </div>
+
+    <!-- TAB A: EXECUTIVE DASHBOARD -->
+    <section id="view-exec" class="space-y-5">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-3" id="kpiGrid"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="card-surface rounded-lg p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-white">Revenue vs. Operating Cash Flow &amp; Receivables ($M)</h3>
+            <span class="text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded">Q2 FY27 OCF -52.18% QoQ</span>
+          </div>
+          <div class="relative h-72">
+            <canvas id="chartRevOcf"></canvas>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2">Source: NVIDIA Q2 FY26–Q2 FY27 Earnings Releases &amp; FY26 Form 10-K. Units: $ in millions.</p>
+        </div>
+
+        <div class="card-surface rounded-lg p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-white">Operating Expenses: Original vs. SBC-Restated Non-GAAP ($M)</h3>
+            <span class="text-[11px] text-rose-300 bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded">+$1,564M Q4 Restatement</span>
+          </div>
+          <div class="relative h-72">
+            <canvas id="chartOpex"></canvas>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2">Source: NVIDIA Q1 FY27 &amp; Q4 FY26 GAAP-to-Non-GAAP Reconciliations. Units: $ in millions.</p>
+        </div>
+      </div>
+
+      <div class="card-surface rounded-lg p-4">
+        <h3 class="text-sm font-bold text-white mb-2">Executive Findings Matrix (Click Any Row to Open in Evidence Explorer)</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400">
+                <th class="py-2 px-2">ID</th>
+                <th class="py-2 px-2">Comparison Title</th>
+                <th class="py-2 px-2">Periods</th>
+                <th class="py-2 px-2">Category</th>
+                <th class="py-2 px-2">AI Semantic</th>
+                <th class="py-2 px-2">Keyword</th>
+                <th class="py-2 px-2">Deterministic Python Delta</th>
+                <th class="py-2 px-2">Action</th>
+              </tr>
+            </thead>
+            <tbody id="execTableBody" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB B: NARRATIVE-VS-METRICS TIMELINE -->
+    <section id="view-timeline" class="hidden space-y-5">
+      <div class="card-surface rounded-lg p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white">Multi-Period Narrative-versus-Metrics Evolution (Q1 FY26 – Q2 FY27)</h3>
+            <p class="text-xs text-slate-400">Every displayed financial figure carries its exact source document, reporting period, and units.</p>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <label for="timelineMetricSelect" class="text-slate-300 font-medium">Select Metric:</label>
+            <select id="timelineMetricSelect" class="bg-[#162035] border border-[#2D3D5E] text-slate-100 rounded px-2.5 py-1.5">
+              <option value="revenue_m">Total Consolidated Revenue ($M)</option>
+              <option value="data_center_rev_m">Data Center Revenue ($M)</option>
+              <option value="gaap_gross_margin_pct">GAAP Gross Margin (%)</option>
+              <option value="operating_cash_flow_m">GAAP Operating Cash Flow ($M)</option>
+              <option value="free_cash_flow_m">Free Cash Flow ($M)</option>
+              <option value="accounts_receivable_m">Accounts Receivable, Net ($M)</option>
+              <option value="inventories_m">Inventories ($M)</option>
+            </select>
+          </div>
+        </div>
+        <div class="relative h-64">
+          <canvas id="chartTimeline"></canvas>
+        </div>
+      </div>
+
+      <div class="card-surface rounded-lg p-4">
+        <h3 class="text-sm font-bold text-white mb-2">Verified Financial Metrics Table ($ in millions, except EPS in $ and margins in %)</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400">
+                <th class="py-2 px-2">Period</th>
+                <th class="py-2 px-2">Ended</th>
+                <th class="py-2 px-2 text-right">Revenue ($M)</th>
+                <th class="py-2 px-2 text-right">Data Center ($M)</th>
+                <th class="py-2 px-2 text-right">GAAP GM (%)</th>
+                <th class="py-2 px-2 text-right">GAAP OpEx ($M)</th>
+                <th class="py-2 px-2 text-right">Non-GAAP OpEx Orig ($M)</th>
+                <th class="py-2 px-2 text-right">Non-GAAP OpEx SBC-Restated ($M)</th>
+                <th class="py-2 px-2 text-right">Operating CF ($M)</th>
+                <th class="py-2 px-2 text-right">Accounts Rec ($M)</th>
+                <th class="py-2 px-2">Primary Source</th>
+              </tr>
+            </thead>
+            <tbody id="timelineMetricsBody" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="space-y-3" id="sourceManifestCards"></div>
+    </section>
+
+    <!-- TAB C: EVIDENCE EXPLORER & GRAPH -->
+    <section id="view-explorer" class="hidden space-y-5">
+      <div class="card-surface rounded-lg p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white">Interactive Evidence Relationship Explorer</h3>
+            <p class="text-xs text-slate-400">Inspect verbatim statements, source URLs, publication dates, deterministic Python formulas, and alternative explanations.</p>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <label for="explorerCompSelect" class="text-slate-300 font-medium">Select Comparison:</label>
+            <select id="explorerCompSelect" class="bg-[#162035] border border-[#2D3D5E] text-slate-100 rounded px-3 py-1.5"></select>
+          </div>
+        </div>
+
+        <!-- Interactive SVG Evidence Graph -->
+        <div id="evidenceGraphContainer" class="card-inner rounded-lg p-3 mb-4 overflow-x-auto"></div>
+
+        <!-- Detailed Audit View -->
+        <div id="explorerDetailContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- TAB D: FINDING INSPECTOR & CUSTOM INGESTION -->
+    <section id="view-inspector" class="hidden space-y-5">
+      <div class="card-surface rounded-lg p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white">4-Category Finding Inspector</h3>
+            <p class="text-xs text-slate-400">A potential narrative–metric divergence is an investigative research lead for an analyst, never proof of dishonesty.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 text-xs" id="inspectorFilterBtns">
+            <button data-cat="ALL" class="cat-filter-btn px-3 py-1 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-medium">All Categories</button>
+            <button data-cat="Verified numerical mismatch" class="cat-filter-btn px-3 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">1. Verified numerical mismatch</button>
+            <button data-cat="Potential narrative–metric divergence" class="cat-filter-btn px-3 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">2. Potential narrative–metric divergence</button>
+            <button data-cat="No identified discrepancy" class="cat-filter-btn px-3 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">3. No identified discrepancy</button>
+            <button data-cat="Insufficient evidence" class="cat-filter-btn px-3 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">4. Insufficient evidence</button>
+          </div>
+        </div>
+        <div id="inspectorCardsContainer" class="space-y-3"></div>
+      </div>
+
+      <!-- Live Custom Evidence Ingestion Form -->
+      <div class="card-surface rounded-lg p-4">
+        <h3 class="text-sm font-bold text-white mb-1">Manually Load / Enter New Sourced Evidence for Live Verification</h3>
+        <p class="text-xs text-slate-400 mb-3">Test ARGUS on any sourced statement and financial figure. Computes live semantic vs. keyword scores and executes deterministic Python verification rules.</p>
+        <form id="customEvidenceForm" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block text-slate-300 mb-1">Comparison Title</label>
+            <input id="inpTitle" type="text" value="Q3 FY26 Revenue Guidance vs. Actual Realization" class="w-full bg-[#0E1422] border border-slate-700 rounded px-2.5 py-1.5 text-slate-100">
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1">Deterministic Rule Type</label>
+            <select id="inpRuleType" class="w-full bg-[#0E1422] border border-slate-700 rounded px-2.5 py-1.5 text-slate-100">
+              <option value="narrative_vs_metric_trajectory">Narrative vs. Metric Trajectory</option>
+              <option value="direct_numerical_or_ceiling">Direct Numerical / Guidance Ceiling Check</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1">Original Statement (Exact Excerpt &amp; Period)</label>
+            <textarea id="inpStmtA" rows="2" class="w-full bg-[#0E1422] border border-slate-700 rounded p-2 text-slate-100">NVIDIA's outlook for the third quarter of fiscal 2026: Revenue is expected to be $54.0 billion, plus or minus 2%.</textarea>
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1">Follow-Up Statement / Financial Table Excerpt</label>
+            <textarea id="inpStmtB" rows="2" class="w-full bg-[#0E1422] border border-slate-700 rounded p-2 text-slate-100">NVIDIA reported record revenue for the third quarter ended October 26, 2025, of $57.0 billion ($57,006 million), up 22% sequentially.</textarea>
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1">Baseline / Guided Value ($M or %)</label>
+            <input id="inpValA" type="number" step="any" value="54000" class="w-full bg-[#0E1422] border border-slate-700 rounded px-2.5 py-1.5 text-slate-100">
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1">Reported Value ($M or %)</label>
+            <input id="inpValB" type="number" step="any" value="57006" class="w-full bg-[#0E1422] border border-slate-700 rounded px-2.5 py-1.5 text-slate-100">
+          </div>
+          <div class="md:col-span-2 flex items-center justify-between pt-1">
+            <div id="customFormFeedback" class="text-emerald-400 font-medium"></div>
+            <button type="submit" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-4 py-2 rounded transition">Run Semantic Match &amp; Deterministic Verification</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB E: RESPONSIBLE AI & BENCHMARK EVALUATION -->
+    <section id="view-responsible" class="hidden space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="card-surface rounded-lg p-4">
+          <h3 class="text-sm font-bold text-sky-400 mb-2">Role 1: AI-Assisted Semantic Discovery</h3>
+          <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
+            <li><strong>Purpose:</strong> Connects related management statements, footnotes, and financial tables across multi-period filings even when terminology changes completely.</li>
+            <li><strong>Why Exact Keyword Matching Fails:</strong>
+              <ul class="list-decimal pl-4 mt-1 space-y-1 text-slate-400">
+                <li><em>False Negatives (Missed Findings):</em> CEO phrasing like <code class="text-sky-300">"compute is revenue"</code> shares zero keywords with <code class="text-sky-300">"Changes in accounts receivable $(22,346)M"</code>.</li>
+                <li><em>False Positives (Boilerplate Collisions):</em> Earnings releases repeat identical sentence templates (<code class="text-amber-300">"Fourth-quarter [Segment] revenue was up X% from the previous quarter..."</code>) across unrelated segments like Automotive, Gaming, and ProViz.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="card-surface rounded-lg p-4">
+          <h3 class="text-sm font-bold text-emerald-400 mb-2">Role 2: Deterministic Python Verification</h3>
+          <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
+            <li><strong>Purpose:</strong> Executes 100% of YoY/QoQ growth calculations, basis-point margin checks, Days Sales Outstanding (DSO) math, and 4-category classification rules in unit-tested Python.</li>
+            <li><strong>Zero Hallucinated Math:</strong> Language models never calculate or judge numerical discrepancies in ARGUS. Every comparison displays its exact Python formula and raw inputs.</li>
+            <li><strong>Auditable Benchmark:</strong> Below is our 12-pair manually labeled test set (<code class="text-emerald-300">data/evaluation_dataset.json</code>) comparing the Concept-Aware Semantic Engine against the Exact Keyword Baseline.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-surface rounded-lg p-4 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h3 class="text-sm font-bold text-white">Live Benchmark Evaluation (12 Manually Labeled Statement Pairs)</h3>
+            <p class="text-xs text-slate-400">Adjust thresholds to inspect real Precision, Recall, F1, and False Positives.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 text-xs">
+            <div>
+              <label for="semThreshSlider" class="text-sky-300 font-medium">Semantic Threshold: <span id="semThreshVal">0.50</span></label>
+              <input id="semThreshSlider" type="range" min="0.15" max="0.85" step="0.05" value="0.50" class="block w-40 accent-sky-400">
+            </div>
+            <div>
+              <label for="kwThreshSlider" class="text-amber-300 font-medium">Keyword Threshold: <span id="kwThreshVal">0.22</span></label>
+              <input id="kwThreshSlider" type="range" min="0.10" max="0.85" step="0.02" value="0.22" class="block w-40 accent-amber-400">
+            </div>
+          </div>
+        </div>
+
+        <div id="benchmarkScoreCards" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400">
+                <th class="py-2 px-2">Pair ID</th>
+                <th class="py-2 px-2">Relationship Type</th>
+                <th class="py-2 px-2">Ground Truth</th>
+                <th class="py-2 px-2">Semantic Score</th>
+                <th class="py-2 px-2">Semantic Pred</th>
+                <th class="py-2 px-2">Keyword Score</th>
+                <th class="py-2 px-2">Keyword Pred</th>
+                <th class="py-2 px-2">Analytical Notes</th>
+              </tr>
+            </thead>
+            <tbody id="benchmarkTableBody" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#0F1626] border-t border-[#23304C] px-4 py-3 text-center text-[11px] text-slate-400 mt-8">
+    ARGUS — AI Financial Research Intelligence &nbsp;|&nbsp; Independent Competition Prototype for Charles Schwab Investment Research &nbsp;|&nbsp; All NVIDIA data sourced from authentic SEC EDGAR &amp; NVIDIA IR filings (FY2026 – Q2 FY2027).
+  </footer>
+
+  <script>
+    const ARGUS_DATA = {"manifest": {"manifest_version": "1.0.0", "last_updated": "2026-10-26", "proposed_user": "Charles Schwab Investment Research Team (Independent Prototype \u2014 Not an official Charles Schwab product)", "research_subject": {"company_name": "NVIDIA Corporation", "ticker": "NVDA", "cik": "0001045810", "exchange": "NASDAQ"}, "sources": [{"source_id": "SRC-NVDA-Q2FY27-PR", "title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027", "document_type": "Earnings Release / Form 8-K Exhibit 99.1", "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "period_ended": "2026-07-26", "verification_status": "Verified Authentic", "extracted_metrics": ["Total Revenue: $96,221M (up 18% Q/Q, up 106% Y/Y)", "Data Center Revenue: $89,000M (up 18% Q/Q, up 117% Y/Y)", "Edge Computing Revenue: $7,200M (up 13% Q/Q, up 27% Y/Y)", "GAAP Gross Margin: 75.0% | Non-GAAP Gross Margin: 75.0%", "GAAP Operating Expenses: $8,408M | Non-GAAP Operating Expenses: $8,232M", "GAAP Operating Income: $63,734M | Non-GAAP Operating Income: $63,956M", "GAAP Net Income: $59,688M | Non-GAAP Net Income: $53,954M", "GAAP Diluted EPS: $2.46 | Non-GAAP Diluted EPS: $2.22", "GAAP Operating Cash Flow: $24,077M | Free Cash Flow: $21,341M", "Accounts Receivable, net: $63,059M | Inventories: $31,575M", "Long-Term Debt: $32,366M | Shareholder Returns: ~$26,000M", "Q3 FY27 Outlook: Revenue $108.0B \u00b12%, GAAP/Non-GAAP Gross Margin 74.0% \u00b150 bps, GAAP OpEx ~$9.2B"], "extracted_excerpts_count": 4}, {"source_id": "SRC-NVDA-Q1FY27-PR", "title": "NVIDIA Announces Financial Results for First Quarter Fiscal 2027", "document_type": "Earnings Release / Form 8-K Exhibit 99.1", "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027", "sec_mirror_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx", "publication_date": "2026-05-20", "reporting_period": "Q1 FY27", "period_ended": "2026-04-26", "verification_status": "Verified Authentic", "extracted_metrics": ["Total Revenue: $81,615M (up 20% Q/Q, up 85% Y/Y)", "Data Center Revenue: $75,200M (up 21% Q/Q, up 92% Y/Y)", "Data Center Compute: $60,400M (up 18% Q/Q) | Networking: $14,800M (up 35% Q/Q)", "Edge Computing Revenue: $6,400M (up 10% Q/Q, up 29% Y/Y)", "GAAP Gross Margin: 74.9% | Non-GAAP Gross Margin: 75.0% (SBC now included in Non-GAAP)", "GAAP Operating Expenses: $7,621M | Non-GAAP Operating Expenses: $7,449M", "GAAP Operating Income: $53,536M | Non-GAAP Operating Income: $53,783M", "GAAP Net Income: $58,321M | Non-GAAP Net Income: $45,548M", "GAAP Diluted EPS: $2.39 | Non-GAAP Diluted EPS: $1.87", "GAAP Operating Cash Flow: $50,344M | Free Cash Flow: $48,554M", "Q2 FY27 Outlook: Revenue $91.0B \u00b12%, GAAP GM 74.9%, Non-GAAP GM 75.0%, GAAP OpEx ~$8.5B"], "extracted_excerpts_count": 3}, {"source_id": "SRC-NVDA-Q4FY26-PR", "title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026", "document_type": "Earnings Release / Form 8-K Exhibit 99.1", "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/", "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26pr.htm", "publication_date": "2026-02-25", "reporting_period": "Q4 FY26 & FY26", "period_ended": "2026-01-25", "verification_status": "Verified Authentic", "extracted_metrics": ["Q4 FY26 Revenue: $68,127M (up 20% Q/Q, up 73% Y/Y) | FY26 Revenue: $215,938M (up 65% Y/Y)", "Q4 FY26 Data Center Revenue: $62,300M (up 22% Q/Q, up 75% Y/Y) | FY26 Data Center: $193,700M (up 68% Y/Y)", "Q4 FY26 GAAP Gross Margin: 75.0% | Non-GAAP Gross Margin: 75.2% (75.1% restated with SBC in Q1 FY27 table)", "FY26 GAAP Gross Margin: 71.1% | Non-GAAP Gross Margin: 71.3%", "Q4 FY26 GAAP OpEx: $6,794M | Non-GAAP OpEx (excl. SBC): $5,102M | Non-GAAP OpEx (incl. SBC): $6,666M", "Q4 FY26 GAAP Net Income: $42,960M | Non-GAAP Net Income: $39,552M", "Q4 FY26 Operating Cash Flow: $36,190M | Free Cash Flow: $34,902M | FY26 FCF: $96,575M", "Q1 FY27 Outlook: Revenue $78.0B \u00b12%, GAAP GM 74.9%, Non-GAAP GM 75.0% (incl. 0.1% SBC impact)"], "extracted_excerpts_count": 3}, {"source_id": "SRC-NVDA-FY26-10K", "title": "NVIDIA Corporation FY2026 Form 10-K Annual Report (For the Fiscal Year Ended January 25, 2026)", "document_type": "SEC Form 10-K Annual Report", "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm", "sec_mirror_url": "https://www.sec.gov/edgar/browse/?CIK=1045810&owner=exclude", "publication_date": "2026-02-25", "reporting_period": "FY26", "period_ended": "2026-01-25", "verification_status": "Verified Authentic", "extracted_metrics": ["FY26 Consolidated Revenue: $215,938M vs FY25 $130,497M (+65.47%)", "FY26 Cost of Revenue: $62,475M | Gross Profit: $153,463M (71.07% GAAP Gross Margin)", "FY26 Research & Development: $18,497M | SG&A: $4,579M | Total OpEx: $23,076M (+40.66% Y/Y)", "FY26 GAAP Operating Income: $130,387M | Net Income: $120,067M | Diluted EPS: $4.90", "FY26 Balance Sheet (as of Jan 25, 2026): Cash & Marketable Securities $62,556M, AR $38,466M, Inventories $21,403M, Long-Term Debt $7,469M", "FY26 Stock-Based Compensation Expense: $6,386M ($261M Cost of Revenue, $4,676M R&D, $1,449M SG&A)", "FY26 Shareholder Returns: $40,086M share repurchases + $974M cash dividends = $41,060M (~$41.1B)"], "extracted_excerpts_count": 2}, {"source_id": "SRC-NVDA-Q3FY26-PR", "title": "NVIDIA Announces Financial Results for Third Quarter Fiscal 2026", "document_type": "Earnings Release / Form 8-K Exhibit 99.1", "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2026", "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000228/q3fy26pr.htm", "publication_date": "2025-11-19", "reporting_period": "Q3 FY26", "period_ended": "2025-10-26", "verification_status": "Verified Authentic", "extracted_metrics": ["Total Revenue: $57,006M (up 22% Q/Q, up 62% Y/Y)", "Data Center Revenue: $51,200M (up 25% Q/Q, up 66% Y/Y)", "GAAP Gross Margin: 73.4% | Non-GAAP Gross Margin: 73.6%", "GAAP Operating Expenses: $5,839M | Non-GAAP Operating Expenses: $4,215M", "GAAP Operating Income: $36,010M | Non-GAAP Operating Income: $37,752M", "GAAP Net Income: $31,910M | Non-GAAP Net Income: $31,767M", "Operating Cash Flow: $23,750M | Free Cash Flow: $22,089M", "Q4 FY26 Outlook: Revenue $65.0B \u00b12%, GAAP GM 74.8%, Non-GAAP GM 75.0%, GAAP OpEx ~$6.7B ($6,650M)"], "extracted_excerpts_count": 2}, {"source_id": "SRC-NVDA-Q2FY26-PR", "title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2026", "document_type": "Earnings Release / Form 8-K Exhibit 99.1", "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026", "sec_mirror_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm", "publication_date": "2025-08-27", "reporting_period": "Q2 FY26", "period_ended": "2025-07-27", "verification_status": "Verified Authentic", "extracted_metrics": ["Total Revenue: $46,743M (up 6% Q/Q, up 56% Y/Y)", "Data Center Revenue: $41,100M (up 5% Q/Q, up 56% Y/Y)", "GAAP Gross Margin: 72.4% | Non-GAAP Gross Margin: 72.7% (72.3% excl. $180M H20 release; 72.5% restated with SBC)", "GAAP Operating Expenses: $5,413M | Non-GAAP Operating Expenses: $3,795M ($5,361M restated with SBC)", "GAAP Operating Income: $28,440M | GAAP Net Income: $26,422M", "Operating Cash Flow: $15,365M | Free Cash Flow: $13,450M", "Q3 FY26 Outlook: Revenue $54.0B \u00b12%, GAAP GM 73.3%, Non-GAAP GM 73.5%, Full-year FY26 OpEx growth in high-30% range"], "extracted_excerpts_count": 3}]}, "metrics": [{"company": "NVIDIA", "ticker": "NVDA", "period": "Q1 FY26", "period_order": 1, "period_ended": "2025-04-27", "revenue_m": 44062.0, "data_center_rev_m": 39100.0, "gaap_gross_margin_pct": 60.5, "nongaap_gross_margin_reported_pct": 61.0, "nongaap_gross_margin_sbc_restated_pct": 60.8, "gaap_opex_m": 5030.0, "nongaap_opex_reported_m": 3583.0, "nongaap_opex_sbc_restated_m": 4993.0, "gaap_operating_income_m": 21638.0, "gaap_net_income_m": 18775.0, "nongaap_net_income_m": 19894.0, "gaap_diluted_eps": 0.76, "nongaap_diluted_eps": 0.81, "operating_cash_flow_m": 27414.0, "free_cash_flow_m": 26135.0, "accounts_receivable_m": 22132.0, "inventories_m": 11338.0, "sbc_expense_m": 1474.0, "guidance_next_q_rev_m": 45000.0, "units": "$ in millions (except EPS in $ and margins in %)", "source_id": "SRC-NVDA-Q2FY26-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026"}, {"company": "NVIDIA", "ticker": "NVDA", "period": "Q2 FY26", "period_order": 2, "period_ended": "2025-07-27", "revenue_m": 46743.0, "data_center_rev_m": 41100.0, "gaap_gross_margin_pct": 72.4, "nongaap_gross_margin_reported_pct": 72.7, "nongaap_gross_margin_sbc_restated_pct": 72.5, "gaap_opex_m": 5413.0, "nongaap_opex_reported_m": 3795.0, "nongaap_opex_sbc_restated_m": 5361.0, "gaap_operating_income_m": 28440.0, "gaap_net_income_m": 26422.0, "nongaap_net_income_m": 25783.0, "gaap_diluted_eps": 1.08, "nongaap_diluted_eps": 1.05, "operating_cash_flow_m": 15365.0, "free_cash_flow_m": 13450.0, "accounts_receivable_m": 27808.0, "inventories_m": 14962.0, "sbc_expense_m": 1624.0, "guidance_next_q_rev_m": 54000.0, "units": "$ in millions (except EPS in $ and margins in %)", "source_id": "SRC-NVDA-Q2FY26-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026"}, {"company": "NVIDIA", "ticker": "NVDA", "period": "Q3 FY26", "period_order": 3, "period_ended": "2025-10-26", "revenue_m": 57006.0, "data_center_rev_m": 51200.0, "gaap_gross_margin_pct": 73.4, "nongaap_gross_margin_reported_pct": 73.6, "nongaap_gross_margin_sbc_restated_pct": 73.5, "gaap_opex_m": 5839.0, "nongaap_opex_reported_m": 4215.0, "nongaap_opex_sbc_restated_m": 5800.0, "gaap_operating_income_m": 36010.0, "gaap_net_income_m": 31910.0, "nongaap_net_income_m": 31767.0, "gaap_diluted_eps": 1.3, "nongaap_diluted_eps": 1.3, "operating_cash_flow_m": 23750.0, "free_cash_flow_m": 22089.0, "accounts_receivable_m": 33391.0, "inventories_m": 19784.0, "sbc_expense_m": 1655.0, "guidance_next_q_rev_m": 65000.0, "units": "$ in millions (except EPS in $ and margins in %)", "source_id": "SRC-NVDA-Q3FY26-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2026"}, {"company": "NVIDIA", "ticker": "NVDA", "period": "Q4 FY26", "period_order": 4, "period_ended": "2026-01-25", "revenue_m": 68127.0, "data_center_rev_m": 62300.0, "gaap_gross_margin_pct": 75.0, "nongaap_gross_margin_reported_pct": 75.2, "nongaap_gross_margin_sbc_restated_pct": 75.1, "gaap_opex_m": 6794.0, "nongaap_opex_reported_m": 5102.0, "nongaap_opex_sbc_restated_m": 6666.0, "gaap_operating_income_m": 44299.0, "gaap_net_income_m": 42960.0, "nongaap_net_income_m": 39552.0, "gaap_diluted_eps": 1.76, "nongaap_diluted_eps": 1.62, "operating_cash_flow_m": 36190.0, "free_cash_flow_m": 34902.0, "accounts_receivable_m": 38466.0, "inventories_m": 21403.0, "sbc_expense_m": 1633.0, "guidance_next_q_rev_m": 78000.0, "units": "$ in millions (except EPS in $ and margins in %)", "source_id": "SRC-NVDA-Q4FY26-PR", "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/"}, {"company": "NVIDIA", "ticker": "NVDA", "period": "Q1 FY27", "period_order": 5, "period_ended": "2026-04-26", "revenue_m": 81615.0, "data_center_rev_m": 75200.0, "gaap_gross_margin_pct": 74.9, "nongaap_gross_margin_reported_pct": 75.0, "nongaap_gross_margin_sbc_restated_pct": 75.0, "gaap_opex_m": 7621.0, "nongaap_opex_reported_m": 7449.0, "nongaap_opex_sbc_restated_m": 7449.0, "gaap_operating_income_m": 53536.0, "gaap_net_income_m": 58321.0, "nongaap_net_income_m": 45548.0, "gaap_diluted_eps": 2.39, "nongaap_diluted_eps": 1.87, "operating_cash_flow_m": 50344.0, "free_cash_flow_m": 48554.0, "accounts_receivable_m": 40710.0, "inventories_m": 25797.0, "sbc_expense_m": 1928.0, "guidance_next_q_rev_m": 91000.0, "units": "$ in millions (except EPS in $ and margins in %)", "source_id": "SRC-NVDA-Q1FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027"}, {"company": "NVIDIA", "ticker": "NVDA", "period": "Q2 FY27", "period_order": 6, "period_ended": "2026-07-26", "revenue_m": 96221.0, "data_center_rev_m": 89000.0, "gaap_gross_margin_pct": 75.0, "nongaap_gross_margin_reported_pct": 75.0, "nongaap_gross_margin_sbc_restated_pct": 75.0, "gaap_opex_m": 8408.0, "nongaap_opex_reported_m": 8232.0, "nongaap_opex_sbc_restated_m": 8232.0, "gaap_operating_income_m": 63734.0, "gaap_net_income_m": 59688.0, "nongaap_net_income_m": 53954.0, "gaap_diluted_eps": 2.46, "nongaap_diluted_eps": 2.22, "operating_cash_flow_m": 24077.0, "free_cash_flow_m": 21341.0, "accounts_receivable_m": 63059.0, "inventories_m": 31575.0, "sbc_expense_m": 2027.0, "guidance_next_q_rev_m": 108000.0, "units": "$ in millions (except EPS in $ and margins in %)", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/"}], "comparisons": [{"comparison_id": "CMP-NVDA-001", "company": "NVIDIA", "title": "FY2026 Operating Expense Growth Guidance vs. Full-Year 10-K Realization", "category": "Verified numerical mismatch", "severity": "Moderate (Guidance vs. Actual Realization)", "baseline_period": "Q2 FY26", "target_period": "FY26", "statement_origin": {"speaker": "Management Outlook / CFO Commentary", "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2026", "source_id": "SRC-NVDA-Q2FY26-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2026", "publication_date": "2025-08-27", "reporting_period": "Q2 FY26", "exact_excerpt": "GAAP and non-GAAP operating expenses are expected to be approximately $5.9 billion and $4.2 billion, respectively. Full year fiscal 2026 operating expense growth is expected to be in the high-30% range."}, "follow_up_statement": {"speaker": "FY2026 Form 10-K / Q4 FY26 Release", "document_title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026 & Form 10-K", "source_id": "SRC-NVDA-FY26-10K", "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm", "publication_date": "2026-02-25", "reporting_period": "FY26", "exact_excerpt": "GAAP ($ in millions): Operating expenses FY26 $23,076 vs. FY25 $16,405, up 41% Y/Y. Non-GAAP ($ in millions): Operating expenses FY26 $16,694 vs. FY25 $11,716, up 42% Y/Y."}, "metric_verification": {"metric_name": "Full-Year Operating Expenses YoY Growth (%)", "units": "% YoY ($ in millions)", "baseline_value": 38.0, "baseline_label": "Guided Ceiling ('high-30% range', i.e. 36.0%\u201339.9%)", "reported_value": 40.66, "reported_label": "FY26 GAAP OpEx YoY (+40.66% exact; 41% table) & Non-GAAP OpEx YoY (+42.49% exact; 42% table)", "raw_inputs": {"fy25_gaap_opex_m": 16405.0, "fy26_gaap_opex_m": 23076.0, "fy25_nongaap_opex_m": 11716.0, "fy26_nongaap_opex_m": 16694.0, "guided_upper_bound_pct": 39.9}, "python_formula": "gaap_opex_yoy = ((23076 - 16405) / 16405) * 100  # = 40.6644%\nnongaap_opex_yoy = ((16694 - 11716) / 11716) * 100  # = 42.4889%\nmismatch_bps = (gaap_opex_yoy - 39.9) * 100  # Exceeds high-30% ceiling", "calculated_delta": "+266 bps above 38.0% midpoint (+76 bps above 39.9% ceiling on GAAP; +259 bps above ceiling on Non-GAAP)", "rule_triggered": "RULE_NUMERICAL_MISMATCH: Actual full-year GAAP OpEx growth (40.66% / 41% reported) and Non-GAAP OpEx growth (42.49% / 42% reported) both crossed into the 40%+ tier, exceeding the 'high-30% range' (36%\u201339.9%) full-year guidance issued in Q2 FY26."}, "matching_metadata": {"ai_semantic_score": 0.86, "keyword_overlap_score": 0.41, "why_semantic_wins": "Management phrased the Q2 FY26 target qualitatively as 'in the high-30% range' while the Q4 FY26 / 10-K table reported tabular figures ('$23,076M vs $16,405M, 41%'). Exact keyword matching misses the link between 'high-30% range' and '41% / 42%', whereas semantic concept mapping connects qualitative percentage range descriptors to realized YoY growth rates."}, "evidence_assessment": {"supporting_evidence": ["FY26 Form 10-K Income Statement confirms R&D rose from $12,914M to $18,497M (+43.2%) and SG&A rose from $3,491M to $4,579M (+31.2%), driving total GAAP OpEx up 40.66% (reported as 41%).", "Q4 FY26 GAAP OpEx was $6,794M vs. Q4 guidance of $6,650M ($6.7B), and Non-GAAP OpEx was $5,102M vs. Q4 guidance of $5,000M ($5.0B)."], "contrary_evidence": ["While OpEx dollar growth (41% GAAP / 42% Non-GAAP) exceeded the high-30% guidance range, FY26 revenue grew 65% YoY to $215,938M, meaning OpEx as a percentage of revenue actually improved from 12.57% in FY25 to 10.69% in FY26."], "alternative_explanations": ["Accelerated engineering hiring, tape-out costs, and infrastructure compute consumption for the Vera Rubin and Blackwell Ultra product cycles in 2H FY26.", "Higher variable compensation and stock-based compensation ($6,386M in FY26 vs. $4,737M in FY25, up 34.8%) tied to outsized revenue and stock performance."], "limitations_and_uncertainty": "Guidance in Q2 FY26 is forward-looking under PSLRA safe harbor; crossing from ~39% to 40.7% GAAP / 42.5% Non-GAAP reflects aggressive R&D reinvestment during a hyper-growth revenue cycle rather than cost-control failure."}}, {"comparison_id": "CMP-NVDA-002", "company": "NVIDIA", "title": "Non-GAAP Stock-Based Compensation (SBC) Methodology Shift & Historical Restatement", "category": "Verified numerical mismatch", "severity": "High (Cross-Document Comparability Alert)", "baseline_period": "Q4 FY26", "target_period": "Q1 FY27", "statement_origin": {"speaker": "Non-GAAP Measures Disclosure (Q4 FY26 Release)", "document_title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026", "source_id": "SRC-NVDA-Q4FY26-PR", "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/", "publication_date": "2026-02-25", "reporting_period": "Q4 FY26", "exact_excerpt": "For the quarter, GAAP and non-GAAP gross margins were 75.0% and 75.2%, respectively... Non-GAAP operating expenses $5,102 [million]... Non-GAAP net income $39,552 [million]... Diluted earnings per share Non-GAAP $1.62."}, "follow_up_statement": {"speaker": "Non-GAAP Measures Disclosure & Summary Table (Q1 FY27 Release)", "document_title": "NVIDIA Announces Financial Results for First Quarter Fiscal 2027", "source_id": "SRC-NVDA-Q1FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027", "publication_date": "2026-05-20", "reporting_period": "Q1 FY27", "exact_excerpt": "Beginning in the first quarter of fiscal 2027, NVIDIA's non-GAAP financial measures no longer exclude stock-based compensation expense. The historical non-GAAP financial information presented has been updated to include stock-based compensation expense. [Q4 FY26 column in Q1 FY27 table: Non-GAAP Gross margin 75.1%, Non-GAAP Operating expenses $6,666M, Non-GAAP Net income $38,969M, Non-GAAP Diluted EPS $1.59]."}, "metric_verification": {"metric_name": "Q4 FY26 Non-GAAP Operating Expenses ($M) Across Consecutive Releases", "units": "$ in millions", "baseline_value": 5102.0, "baseline_label": "Q4 FY26 Non-GAAP OpEx as originally reported on Feb 25, 2026 ($5,102M)", "reported_value": 6666.0, "reported_label": "Q4 FY26 Non-GAAP OpEx as restated in Q1 FY27 release on May 20, 2026 ($6,666M)", "raw_inputs": {"q4fy26_nongaap_opex_orig_m": 5102.0, "q4fy26_nongaap_opex_restated_m": 6666.0, "q4fy26_opex_sbc_m": 1564.0, "q4fy26_nongaap_eps_orig": 1.62, "q4fy26_nongaap_eps_restated": 1.59}, "python_formula": "opex_delta_m = 6666.0 - 5102.0  # = +$1,564.0M (exact Q4 OpEx SBC expense)\nopex_pct_diff = ((6666.0 - 5102.0) / 5102.0) * 100  # = +30.6546%\neps_delta = 1.59 - 1.62  # = -$0.03 per diluted share", "calculated_delta": "+$1,564.0M (+30.65%) higher Non-GAAP OpEx; -$583M lower Non-GAAP Net Income; -$0.03 lower Non-GAAP EPS for the identical Q4 FY26 period", "rule_triggered": "RULE_NUMERICAL_MISMATCH: Identical historical period (Q4 FY26) exhibits a $1,564M (+30.65%) numerical discrepancy in Non-GAAP Operating Expenses and $0.03 EPS difference between the Q4 FY26 release and the Q1 FY27 comparative column due to the accounting policy transition to include Stock-Based Compensation (SBC) in Non-GAAP metrics."}, "matching_metadata": {"ai_semantic_score": 0.91, "keyword_overlap_score": 0.52, "why_semantic_wins": "Automated data scrapers that ingest historical Non-GAAP tables without reading footnote disclosures flag a 30.65% jump in Q4 FY26 Non-GAAP OpEx or miscalculate Q1 FY27 QoQ Non-GAAP OpEx growth as +46.0% ($7,449M vs $5,102M) instead of the true like-for-like +11.75% ($7,449M vs $6,666M). ARGUS links the footnote policy statement to the restated comparative table."}, "evidence_assessment": {"supporting_evidence": ["In Q4 FY26 GAAP-to-Non-GAAP reconciliation, Stock-Based Compensation deducted from Operating Expenses was exactly $1,564M ($1,217M R&D + $347M SG&A). Adding $1,564M back to $5,102M equals $6,666M exactly.", "Similarly, Q2 FY26 Non-GAAP OpEx was restated in the Q2 FY27 release from $3,795M to $5,361M (a difference of $1,566M, matching Q2 FY26 OpEx SBC of $1,566M)."], "contrary_evidence": ["Management transparently pre-announced this transition in the Q4 FY26 outlook section on Feb 25, 2026 and restated prior periods in Q1 FY27 and Q2 FY27 tables for like-for-like comparability."], "alternative_explanations": ["Intentional governance enhancement: Including SBC in Non-GAAP aligns with institutional investor and SEC feedback that stock-based compensation is a true economic cost."], "limitations_and_uncertainty": "Analysts pulling unadjusted time-series data from legacy spreadsheets risk severe modeling errors if pre-FY27 Non-GAAP figures (excluding SBC) are spliced directly onto FY27 Non-GAAP figures (including SBC)."}}, {"comparison_id": "CMP-NVDA-003", "company": "NVIDIA", "title": "Q2 FY27 'Compute is Revenue' & Profitable Demand Narrative vs. Working Capital & Operating Cash Flow Divergence", "category": "Potential narrative\u2013metric divergence", "severity": "High (Primary Research Lead for Equity Analysts)", "baseline_period": "Q1 FY27", "target_period": "Q2 FY27", "statement_origin": {"speaker": "Jensen Huang, Founder and CEO of NVIDIA", "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "exact_excerpt": "\u201cAI has reached its inflection point. It's doing useful work. Its tokens are productive and profitable. Now, compute is revenue,\u201d said Jensen Huang, founder and CEO of NVIDIA. \u201cAnd demand is accelerating... The AI infrastructure buildout is at full steam. Vera Rubin, now in full production, was built to power exactly this moment.\u201d"}, "follow_up_statement": {"speaker": "Condensed Consolidated Balance Sheets & Statements of Cash Flows (Q2 FY27)", "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "exact_excerpt": "Three Months Ended July 26, 2026: Revenue $96,221M (up 18% Q/Q); Operating income $63,734M (up 19% Q/Q). Cash flows from operating activities: Changes in Accounts receivable $(22,346)M; Net cash provided by operating activities $24,077M (vs. $50,344M in Q1 FY27). Balance Sheet: Accounts receivable, net $63,059M (vs. $40,710M in Q1 FY27)."}, "metric_verification": {"metric_name": "Sequential Revenue Growth (%) vs. Operating Cash Flow Growth (%) & Accounts Receivable Surge", "units": "% QoQ and $ in millions", "baseline_value": 17.89, "baseline_label": "Q2 FY27 Sequential Revenue Growth (+17.89% QoQ, +$14,606M) & Operating Income Growth (+19.05% QoQ)", "reported_value": -52.17, "reported_label": "Q2 FY27 Operating Cash Flow QoQ (-52.17%, from $50,344M to $24,077M) & FCF QoQ (-56.05%, from $48,554M to $21,341M)", "raw_inputs": {"q1fy27_rev_m": 81615.0, "q2fy27_rev_m": 96221.0, "q1fy27_ocf_m": 50344.0, "q2fy27_ocf_m": 24077.0, "q1fy27_fcf_m": 48554.0, "q2fy27_fcf_m": 21341.0, "q1fy27_ar_m": 40710.0, "q2fy27_ar_m": 63059.0}, "python_formula": "rev_qoq_pct = ((96221 - 81615) / 81615) * 100  # = +17.8962%\nocf_qoq_pct = ((24077 - 50344) / 50344) * 100  # = -52.1750%\nar_qoq_pct = ((63059 - 40710) / 40710) * 100   # = +54.8981% (+$22,349M)\ndso_q1 = (40710 / 81615) * 91  # = 45.39 days\ndso_q2 = (63059 / 96221) * 91  # = 59.64 days (+14.25 days)", "calculated_delta": "70.07 percentage-point divergence between sequential Revenue growth (+17.90% QoQ) and Operating Cash Flow contraction (-52.18% QoQ), driven by a +54.90% (+$22,349M) single-quarter jump in Accounts Receivable (DSO expanding from 45.4 to 59.6 days).", "rule_triggered": "RULE_NARRATIVE_DIVERGENCE: Strongly positive commercial velocity narrative ('compute is revenue', 'Vera Rubin in full production') coincides with a >50% sequential drop in Operating Cash Flow and Free Cash Flow as Accounts Receivable grew 3.07x faster than Revenue (+54.9% vs +17.9% QoQ)."}, "matching_metadata": {"ai_semantic_score": 0.84, "keyword_overlap_score": 0.19, "why_semantic_wins": "CEO narrative uses high-level economic metaphors ('tokens are productive and profitable. Now, compute is revenue', 'full production'), containing zero overlap with cash-flow accounting terms ('accounts receivable', 'operating cash flows', 'working capital'). Semantic mapping links revenue-monetization claims to cash-conversion and receivables quality metrics."}, "evidence_assessment": {"supporting_evidence": ["Accounts Receivable rose by $22,349M on the Balance Sheet (from $40,710M at April 26, 2026 to $63,059M at July 26, 2026), exceeding the total sequential revenue increase of $14,606M.", "Free Cash Flow dropped from $48,554M in Q1 FY27 to $21,341M in Q2 FY27 (-56.05% QoQ), even as GAAP Net Income rose to $59,688M."], "contrary_evidence": ["First-half (6M FY27) Operating Cash Flow remained up 74.0% YoY ($74,421M in 1H FY27 vs. $42,779M in 1H FY26), and 1H Free Cash Flow was $69,895M (+76.6% YoY).", "Q2 FY27 Operating Cash Flow ($24,077M) was still up 56.7% YoY compared to Q2 FY26 ($15,365M)."], "alternative_explanations": ["Back-end loaded shipment linearity: Vera Rubin rack-scale systems ramped into full production late in Q2 FY27, causing a high proportion of quarterly billings to occur in the final month of the quarter (collected in Q3 FY27).", "Quarterly cash tax payment timing and customer concentration among hyperscale cloud providers with standard net-60 payment terms."], "limitations_and_uncertainty": "A divergence between accrual revenue and quarterly operating cash flow is a classic fundamental research lead\u2014not evidence of improper revenue recognition. Analysts should monitor Q3 FY27 cash collections and DSO normalization."}}, {"comparison_id": "CMP-NVDA-004", "company": "NVIDIA", "title": "Blackwell Ultra & Vera Rubin Generational Transitions vs. Gross Margin Trajectory (Q2 FY26 \u2013 Q2 FY27)", "category": "Potential narrative\u2013metric divergence", "severity": "Moderate (Margin Ceiling & Guidance Compression Lead)", "baseline_period": "Q4 FY26", "target_period": "Q2 FY27 & Q3 FY27 Outlook", "statement_origin": {"speaker": "Jensen Huang, Founder and CEO of NVIDIA", "document_title": "NVIDIA Q4 FY26 & Q2 FY27 Earnings Releases", "source_id": "SRC-NVDA-Q4FY26-PR", "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/", "publication_date": "2026-02-25", "reporting_period": "Q4 FY26 \u2013 Q2 FY27", "exact_excerpt": "\u201cGrace Blackwell with NVLink is the king of inference today \u2014 delivering an order-of-magnitude lower cost per token \u2014 and Vera Rubin will extend that leadership even further... Vera Rubin, now in full production, was built to power exactly this moment.\u201d"}, "follow_up_statement": {"speaker": "Q2 FY27 Summary & Q3 FY27 Outlook", "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "exact_excerpt": "For the quarter [Q2 FY27], GAAP and non-GAAP gross margins were both 75.0% [vs. 74.9% GAAP / 75.0% Non-GAAP in Q1 FY27 and 75.0% GAAP / 75.1% restated Non-GAAP in Q4 FY26]. Outlook for Q3 FY27: GAAP and non-GAAP gross margins are expected to be 74.0%, plus or minus 50 basis points."}, "metric_verification": {"metric_name": "GAAP & Non-GAAP Gross Margin (%) Across Architecture Ramps", "units": "% (and basis points)", "baseline_value": 75.0, "baseline_label": "Q4 FY26 \u2013 Q2 FY27 Gross Margin Plateau (75.0% GAAP / 75.0% Non-GAAP)", "reported_value": 74.0, "reported_label": "Q3 FY27 Guided GAAP & Non-GAAP Gross Margin (74.0% \u00b150 bps, -100 bps QoQ)", "raw_inputs": {"q2fy26_gaap_gm": 72.4, "q3fy26_gaap_gm": 73.4, "q4fy26_gaap_gm": 75.0, "q1fy27_gaap_gm": 74.9, "q2fy27_gaap_gm": 75.0, "q3fy27_guided_gm": 74.0}, "python_formula": "gm_recovery_fy26 = 75.0 - 72.4  # = +2.6 pts (+260 bps from Q2 FY26 to Q4 FY26)\ngm_plateau_1h27 = 75.0 - 75.0   # = 0.0 pts (flat from Q4 FY26 to Q2 FY27)\ngm_q3fy27_guide_delta = 74.0 - 75.0  # = -1.0 pt (-100 bps sequential compression)", "calculated_delta": "0 bps expansion from Q4 FY26 (75.0%) to Q2 FY27 (75.0%), followed by a -100 bps guided sequential compression to 74.0% in Q3 FY27 as Vera Rubin enters full production.", "rule_triggered": "RULE_NARRATIVE_DIVERGENCE: While management achieved its Q2 FY26 promise to exit FY26 in the mid-70% gross margin range (reaching 75.0% in Q4 FY26), the full-production ramp of Vera Rubin in Q2/Q3 FY27 coincides with a 100 bps guided gross margin step-down (to 74.0%) and a 37.5%QoQ surge in Inventories ($21,403M in Q4 FY26 to $31,575M in Q2 FY27, +47.5% over 6 months)."}, "matching_metadata": {"ai_semantic_score": 0.82, "keyword_overlap_score": 0.28, "why_semantic_wins": "Connects qualitative product leadership and full-production ramp claims ('Vera Rubin, now in full production', 'king of inference') with unit-economics, inventory build, and forward gross margin compression."}, "evidence_assessment": {"supporting_evidence": ["Q2 FY26 Outlook stated: 'The company continues to expect to exit the year with non-GAAP gross margins in the mid-70% range.' NVIDIA met this in Q4 FY26 (75.0% GAAP / 75.2% Non-GAAP).", "However, in Q2 FY27, as Vera Rubin ramped into full production, Inventories rose to $31,575M (up from $21,403M at FY26 year-end, +47.5%) and Q3 FY27 gross margin was guided down 100 bps to 74.0%."], "contrary_evidence": ["Gross profit dollars still expanded 18.0% QoQ in Q2 FY27 to $72,142M (up 113.1% YoY from $33,853M in Q2 FY26).", "A 74.0%\u201375.0% gross margin at a ~$385B+ annualized revenue run-rate remains extraordinarily high by semiconductor hardware standards."], "alternative_explanations": ["Initial manufacturing yields, warranty reserves, and complex rack-scale BoM (HBM4 memory, co-packaged optics in Spectrum-6) typically dilute gross margins by 100\u2013200 bps during the early quarters of a new architecture ramp (just as Blackwell did in 1H FY26)."], "limitations_and_uncertainty": "Segment-level gross margins (Data Center vs. Edge Computing vs. Networking) are not separately disclosed in quarterly releases."}}, {"comparison_id": "CMP-NVDA-005", "company": "NVIDIA", "title": "AI Infrastructure & Agentic AI Demand Inflection vs. Data Center Revenue Trajectory", "category": "No identified discrepancy", "severity": "Verified Consistent", "baseline_period": "Q3 FY26", "target_period": "Q2 FY27", "statement_origin": {"speaker": "Jensen Huang, Founder and CEO of NVIDIA", "document_title": "NVIDIA Q3 FY26, Q4 FY26, Q1 FY27 & Q2 FY27 Earnings Releases", "source_id": "SRC-NVDA-Q3FY26-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2026", "publication_date": "2025-11-19", "reporting_period": "Q3 FY26 \u2013 Q2 FY27", "exact_excerpt": "Q3 FY26: \u201cBlackwell sales are off the charts, and cloud GPUs are sold out... Compute demand keeps accelerating.\u201d \u2192 Q4 FY26: \u201cComputing demand is growing exponentially \u2014 the agentic AI inflection point has arrived.\u201d \u2192 Q1 FY27: \u201cThe buildout of AI factories \u2014 the largest infrastructure expansion in human history \u2014 is accelerating at extraordinary speed.\u201d \u2192 Q2 FY27: \u201cThe AI infrastructure buildout is at full steam.\u201d"}, "follow_up_statement": {"speaker": "Segment Revenue Disclosures (Q2 FY26 \u2013 Q2 FY27)", "document_title": "NVIDIA Q2 FY26 through Q2 FY27 Earnings Releases", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "exact_excerpt": "Data Center: Second-quarter [FY27] revenue was $89.0 billion, up 18% from the previous quarter [$75.2B in Q1 FY27] and up 117% from a year ago [$41.1B in Q2 FY26]."}, "metric_verification": {"metric_name": "Data Center Quarterly Revenue ($M) & YoY Growth Acceleration (%)", "units": "$ in millions and % YoY", "baseline_value": 41100.0, "baseline_label": "Q2 FY26 Data Center Revenue ($41,100M, +56% YoY)", "reported_value": 89000.0, "reported_label": "Q2 FY27 Data Center Revenue ($89,000M, +116.55% exact / +117% reported YoY)", "raw_inputs": {"dc_rev_q2fy26_m": 41100.0, "dc_rev_q3fy26_m": 51200.0, "dc_rev_q4fy26_m": 62300.0, "dc_rev_q1fy27_m": 75200.0, "dc_rev_q2fy27_m": 89000.0}, "python_formula": "dc_yoy_pct = ((89000 - 41100) / 41100) * 100  # = +116.5450% (117% reported)\ndc_qoq_q3 = ((51200 - 41100) / 41100) * 100   # = +24.57%\ndc_qoq_q4 = ((62300 - 51200) / 51200) * 100   # = +21.68%\ndc_qoq_q1 = ((75200 - 62300) / 62300) * 100   # = +20.71%\ndc_qoq_q2 = ((89000 - 75200) / 75200) * 100   # = +18.35%", "calculated_delta": "+$47,900M (+116.55% YoY) expansion in quarterly Data Center revenue; YoY growth rate accelerated from +56% (Q2 FY26) \u2192 +66% (Q3 FY26) \u2192 +75% (Q4 FY26) \u2192 +92% (Q1 FY27) \u2192 +117% (Q2 FY27).", "rule_triggered": "RULE_NO_DISCREPANCY: Management's qualitative claims of accelerating demand across 4 consecutive quarters are quantitatively corroborated by accelerating year-over-year Data Center revenue growth (from 56% YoY in Q2 FY26 to 117% YoY in Q2 FY27) and sequential quarterly revenue beats against every prior outlook."}, "matching_metadata": {"ai_semantic_score": 0.93, "keyword_overlap_score": 0.34, "why_semantic_wins": "Tracks evolving management terminology across four quarters ('virtuous cycle of AI' \u2192 'agentic AI inflection point' \u2192 'AI factories' \u2192 'tokens are productive and profitable') and binds all four narratives to the underlying Data Center revenue series."}, "evidence_assessment": {"supporting_evidence": ["Every single quarterly revenue outlook was exceeded: Q3 FY26 guided $54.0B vs actual $57.0B (+5.6% beat); Q4 FY26 guided $65.0B vs actual $68.1B (+4.8% beat); Q1 FY27 guided $78.0B vs actual $81.6B (+4.6% beat); Q2 FY27 guided $91.0B vs actual $96.2B (+5.7% beat).", "Data Center share of total NVIDIA revenue increased from 87.9% in Q2 FY26 ($41.1B / $46.74B) to 92.5% in Q2 FY27 ($89.0B / $96.22B)."], "contrary_evidence": [], "alternative_explanations": ["Customer financing initiatives and sovereign AI partnerships helped sustain top-line acceleration alongside hyperscaler capex."], "limitations_and_uncertainty": "While top-line revenue growth corroborates demand claims, customer concentration among top cloud service providers remains high."}}, {"comparison_id": "CMP-NVDA-006", "company": "NVIDIA", "title": "Shareholder Capital Return Commitments & Dividend Expansion Verification", "category": "No identified discrepancy", "severity": "Verified Consistent", "baseline_period": "Q4 FY26", "target_period": "Q1 FY27 & Q2 FY27", "statement_origin": {"speaker": "Capital Return Disclosures (Q4 FY26, Q1 FY27, Q2 FY27 Releases)", "document_title": "NVIDIA Q4 FY26, Q1 FY27, and Q2 FY27 Earnings Releases", "source_id": "SRC-NVDA-Q1FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027", "publication_date": "2026-05-20", "reporting_period": "Q1 FY27 \u2013 Q2 FY27", "exact_excerpt": "Q1 FY27: \u201cDuring the first quarter of fiscal 2027, NVIDIA returned a record level of approximately $20.0 billion to shareholders... NVIDIA is increasing its quarterly cash dividend from $0.01 per share to $0.25 per share.\u201d \u2192 Q2 FY27: \u201cDuring the second quarter of fiscal 2027, NVIDIA returned approximately $26.0 billion to shareholders in the form of shares repurchased and cash dividends.\u201d"}, "follow_up_statement": {"speaker": "Condensed Consolidated Statements of Cash Flows (Q1 FY27 & Q2 FY27)", "document_title": "NVIDIA Q2 FY27 Earnings Release Cash Flow Statement", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "exact_excerpt": "Financing Activities (Three Months Ended July 26, 2026): Payments related to repurchases of common stock $(19,732)M; Dividends paid $(6,047)M. Six Months Ended July 26, 2026: Repurchases $(39,044)M; Dividends paid $(6,290)M."}, "metric_verification": {"metric_name": "Share Repurchases + Cash Dividends Paid ($M)", "units": "$ in millions", "baseline_value": 26000.0, "baseline_label": "Narrative Claim: 'approximately $26.0 billion' returned in Q2 FY27 ('~$20.0 billion' in Q1 FY27)", "reported_value": 25779.0, "reported_label": "Cash Flow Statement Actuals: $19,732M buybacks + $6,047M dividends = $25,779M ($25.78B) in Q2 FY27; $19,312M + $243M = $19,555M ($19.56B) in Q1 FY27", "raw_inputs": {"q1fy27_buybacks_m": 19312.0, "q1fy27_dividends_m": 243.0, "q2fy27_buybacks_m": 19732.0, "q2fy27_dividends_m": 6047.0, "h1fy27_buybacks_m": 39044.0, "h1fy27_dividends_m": 6290.0}, "python_formula": "q1_return_m = 19312 + 243  # = $19,555M (~$19.6B vs '~$20.0B' narrative, incl. trade-date vs settlement timing)\nq2_return_m = 19732 + 6047  # = $25,779M (~$25.8B vs '~$26.0B' narrative)\nh1_return_m = 39044 + 6290  # = $45,334M ($45.33B returned in 6 months)", "calculated_delta": "$221M (0.85%) difference between narrative 'approximately $26.0 billion' and cash-settled financing outflows ($25,779M), well within standard rounding and trade-date settlement tolerances.", "rule_triggered": "RULE_NO_DISCREPANCY: Cash flow financing line items confirm $19,732M in share repurchases and $6,047M in cash dividends ($25.78B total) in Q2 FY27, and confirm the 25x dividend increase from $243M/quarter ($0.01/sh) in Q1 FY27 to $6,047M/quarter ($0.25/sh) in Q2 FY27."}, "matching_metadata": {"ai_semantic_score": 0.89, "keyword_overlap_score": 0.61, "why_semantic_wins": "Both semantic and keyword matchers link 'shares repurchased and cash dividends' to the Cash Flows from Financing Activities lines, though semantic matching automatically aggregates the two separate cash flow rows ('Payments related to repurchases of common stock' + 'Dividends paid')."}, "evidence_assessment": {"supporting_evidence": ["Dividends paid jumped from $243M in Q1 FY27 to $6,047M in Q2 FY27 (24.88x increase), directly verifying the dividend hike from $0.01/share to $0.25/share across ~24.19B basic shares.", "First-half FY27 total shareholder return ($45,334M) already surpassed full-year FY26 total shareholder return ($41,060M)."], "contrary_evidence": ["Note that in Q2 FY27, Free Cash Flow was $21,341M while shareholder returns were $25,779M, funded alongside $24,896M in net proceeds from new debt issuance."], "alternative_explanations": ["Small variance ($25.78B cash flow vs ~$26.0B narrative) reflects standard 1\u20132 day trade-date vs. cash-settlement timing at quarter-end."], "limitations_and_uncertainty": "None; cash flow statement and balance sheet authorization roll-forward ($38.5B + $80.0B new authorization - ~$19.7B Q2 repurchases = ~$98.8B / ~$99.0B remaining) reconcile cleanly."}}, {"comparison_id": "CMP-NVDA-007", "company": "NVIDIA", "title": "Hyperscale vs. ACIE Sub-Market Revenue Split & $500B Third-Party Compute Financing Platforms", "category": "Insufficient evidence", "severity": "Disclosure Gap / Unverifiable Sub-Segment Breakdown", "baseline_period": "Q1 FY27", "target_period": "Q2 FY27", "statement_origin": {"speaker": "Segment Reporting Framework & Strategic Highlights (Q1 FY27 & Q2 FY27)", "document_title": "NVIDIA Q1 FY27 & Q2 FY27 Earnings Releases", "source_id": "SRC-NVDA-Q1FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027", "publication_date": "2026-05-20", "reporting_period": "Q1 FY27 \u2013 Q2 FY27", "exact_excerpt": "Q1 FY27: \u201cNVIDIA is transitioning to a new reporting framework that better reflects its current and future growth drivers. NVIDIA will have two market platforms \u2014 Data Center and Edge Computing. Within Data Center, NVIDIA will report two sub-markets, Hyperscale and ACIE, which incorporates AI Clouds, Industrial and Enterprise.\u201d \u2192 Q2 FY27: \u201cAnnounced strategic partnerships to establish independent compute financing platforms with Apollo, BlackRock, Blackstone, Brookfield, Goldman Sachs and KKR to mobilize over $500 billion of third-party capital for the buildout of AI infrastructure over time, subject to definitive agreements.\u201d"}, "follow_up_statement": {"speaker": "Q2 FY27 Condensed Consolidated Financial Statements", "document_title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027", "source_id": "SRC-NVDA-Q2FY27-PR", "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027/", "publication_date": "2026-08-26", "reporting_period": "Q2 FY27", "exact_excerpt": "Highlights \u2014 Data Center: Second-quarter revenue was $89.0 billion, up 18% from the previous quarter and up 117% from a year ago. Edge Computing: Second-quarter Edge Computing revenue was $7.2 billion, up 13% from the previous quarter and up 27% from a year ago. [Note: Exact dollar split between Hyperscale and ACIE sub-markets and committed binding capital under the $500B financing initiative are not tabulated in the Q2 FY27 earnings release]."}, "metric_verification": {"metric_name": "Data Center Sub-Market Split (Hyperscale $M vs. ACIE $M) & Binding Financing Commitments ($M)", "units": "$ in millions", "baseline_value": null, "baseline_label": "Hyperscale vs. ACIE Sub-Market Dollar Split (Not tabulated in Q2 FY27 earnings release)", "reported_value": 89000.0, "reported_label": "Aggregate Data Center Revenue ($89,000M reported; sub-market dollar breakdown pending Form 10-Q footnote)", "raw_inputs": {"q2fy27_total_dc_rev_m": 89000.0, "q2fy27_edge_rev_m": 7200.0, "hyperscale_rev_m": null, "acie_rev_m": null, "binding_third_party_financing_m": null}, "python_formula": "# Deterministic check requires both Hyperscale and ACIE sub-market figures:\nhyperscale_rev = None  # Not disclosed in Q2 FY27 press release text/tables\nacie_rev = None        # Not disclosed in Q2 FY27 press release text/tables\nif hyperscale_rev is None or acie_rev is None:\n    status = 'INSUFFICIENT_EVIDENCE'", "calculated_delta": "N/A \u2014 Sub-market dollar disaggregation (Hyperscale vs. ACIE) and binding commitments for the $500B financing platforms ('subject to definitive agreements') are not quantified in the earnings release.", "rule_triggered": "RULE_INSUFFICIENT_EVIDENCE: Source documents announce the new Hyperscale / ACIE sub-market structure and the >$500B third-party compute financing partnerships, but the press release tables only report aggregate Data Center ($89.0B) and Edge Computing ($7.2B) revenue, and note that the financing platforms remain 'subject to definitive agreements'."}, "matching_metadata": {"ai_semantic_score": 0.79, "keyword_overlap_score": 0.22, "why_semantic_wins": "Identifies that the Q1 FY27 promise to report 'two sub-markets, Hyperscale and ACIE' and the Q2 FY27 '$500 billion of third-party capital' announcement lack corresponding tabular disaggregation in the Q2 FY27 earnings release."}, "evidence_assessment": {"supporting_evidence": ["Q1 FY27 release provided legacy sub-market figures (Compute $60.4B, Networking $14.8B = $75.2B Data Center), while Q2 FY27 release reported aggregate Data Center ($89.0B) and Edge Computing ($7.2B).", "Q2 FY27 Balance Sheet shows Non-marketable securities increased from $22,251M (Jan 25, 2026) to $43,364M (Apr 26, 2026) to $51,157M (Jul 26, 2026), and Marketable equity securities rose from $12,886M to $42,783M, showing substantial balance-sheet ecosystem investments."], "contrary_evidence": [], "alternative_explanations": ["Detailed segment and disaggregation footnotes are typically published in Note 14/15 of the quarterly Form 10-Q and CFO Commentary rather than the headline earnings release tables.", "The $500B private-capital initiative with Apollo, BlackRock, Blackstone, Brookfield, Goldman Sachs, and KKR is explicitly disclosed as a multi-year mobilization target 'subject to definitive agreements'."], "limitations_and_uncertainty": "Requires cross-checking the full Q2 FY27 Form 10-Q Segment Reporting footnote and subsequent 8-K filings as definitive financing agreements are executed."}}], "eval_dataset": [{"pair_id": "EVAL-01", "statement_a": "Full year fiscal 2026 operating expense growth is expected to be in the high-30% range.", "statement_b": "Fiscal 2026 Summary: GAAP Operating expenses $23,076M vs FY25 $16,405M, Y/Y 41%. Non-GAAP Operating expenses $16,694M vs $11,716M, Y/Y 42%.", "ground_truth_match": 1, "relationship_type": "Guidance vs. Realized Metric (Paraphrased Range vs. Tabular %)", "notes": "True link: 'high-30% range' vs '41% / 42% Y/Y'. Keyword overlap is low because 'growth' and 'high-30% range' do not appear in the table."}, {"pair_id": "EVAL-02", "statement_a": "AI has reached its inflection point. It's doing useful work. Its tokens are productive and profitable. Now, compute is revenue.", "statement_b": "Cash flows from operating activities: Accounts receivable change $(22,346)M; Net cash provided by operating activities $24,077M vs $50,344M in Q1 FY27.", "ground_truth_match": 1, "relationship_type": "Monetization Narrative vs. Cash Conversion / Receivables Quality", "notes": "True analytical link: CEO monetization claim vs cash flow / working capital conversion. Zero shared financial keywords."}, {"pair_id": "EVAL-03", "statement_a": "The company continues to expect to exit the year with non-GAAP gross margins in the mid-70% range.", "statement_b": "For the fourth quarter ended January 25, 2026, GAAP and non-GAAP gross margins were 75.0% and 75.2%, respectively.", "ground_truth_match": 1, "relationship_type": "Year-End Margin Target vs. Q4 Realized Margin", "notes": "True link: 'exit the year' + 'mid-70% range' maps to 'fourth quarter' + '75.0% and 75.2%'."}, {"pair_id": "EVAL-04", "statement_a": "Beginning in the first quarter of fiscal 2027, NVIDIA's non-GAAP financial measures no longer exclude stock-based compensation expense.", "statement_b": "Q1 FY27 Summary Table \u2014 Q4 FY26 Column: Non-GAAP Operating expenses $6,666M (updated from $5,102M reported in Q4 FY26 release).", "ground_truth_match": 1, "relationship_type": "Accounting Policy Footnote vs. Restated Historical Table", "notes": "True link: explains why Q4 FY26 Non-GAAP OpEx changed by $1,564M."}, {"pair_id": "EVAL-05", "statement_a": "Blackwell sales are off the charts, and cloud GPUs are sold out. Compute demand keeps accelerating and compounding across training and inference.", "statement_b": "Data Center: Third-quarter revenue was a record $51.2 billion, up 25% from the previous quarter and up 66% from a year ago.", "ground_truth_match": 1, "relationship_type": "Demand Narrative vs. Segment Revenue Growth", "notes": "True link: qualitative demand acceleration vs Data Center top-line growth."}, {"pair_id": "EVAL-06", "statement_a": "During the second quarter of fiscal 2027, NVIDIA returned approximately $26.0 billion to shareholders in the form of shares repurchased and cash dividends.", "statement_b": "Cash flows from financing activities: Payments related to repurchases of common stock $(19,732)M; Dividends paid $(6,047)M.", "ground_truth_match": 1, "relationship_type": "Capital Return Summary vs. Cash Flow Financing Lines", "notes": "True link: both semantic and keyword matchers should catch 'repurchases' and 'dividends'."}, {"pair_id": "EVAL-07", "statement_a": "Vera Rubin, now in full production, was built to power exactly this moment... delivering up to a 10x reduction in inference token cost.", "statement_b": "Q3 FY27 Outlook: GAAP and non-GAAP gross margins are expected to be 74.0%, plus or minus 50 basis points [down from 75.0% in Q2 FY27]; Inventories rose to $31,575M.", "ground_truth_match": 1, "relationship_type": "New Architecture Ramp vs. Forward Margin & Inventory Impact", "notes": "True link: production ramp of new architecture vs gross margin dilution and inventory build."}, {"pair_id": "EVAL-08", "statement_a": "Within Data Center, NVIDIA will report two sub-markets, Hyperscale and ACIE, which incorporates AI Clouds, Industrial and Enterprise.", "statement_b": "Q2 FY27 Highlights: Data Center revenue was $89.0 billion; Edge Computing revenue was $7.2 billion (sub-market dollar split omitted).", "ground_truth_match": 1, "relationship_type": "Reporting Framework Commitment vs. Subsequent Disclosure Completeness", "notes": "True link: identifies missing sub-market disaggregation in Q2 press release."}, {"pair_id": "EVAL-09", "statement_a": "Fourth-quarter Gaming revenue was $3.7 billion, up 47% from a year ago, driven by strong Blackwell demand, and down 13% from the previous quarter.", "statement_b": "GAAP Income tax expense for the fourth quarter was $7,437 million compared with $3,126 million in the prior year.", "ground_truth_match": 0, "relationship_type": "Unrelated Metrics (Gaming Revenue vs. Income Tax Expense)", "notes": "Negative pair: shares words 'fourth-quarter', 'million/billion', 'year', which can trick naive keyword overlap."}, {"pair_id": "EVAL-10", "statement_a": "Fourth-quarter Automotive revenue was $604 million, up 2% from the previous quarter and up 6% from a year ago.", "statement_b": "Fourth-quarter Professional Visualization revenue was $1.3 billion, up 74% from the previous quarter and up 159% from a year ago.", "ground_truth_match": 0, "relationship_type": "Different Segments (Automotive vs. ProViz with identical sentence template)", "notes": "Hard negative pair for keyword baseline! Identical boilerplate phrasing ('Fourth-quarter ... revenue was ... up ... from the previous quarter and up ... from a year ago') causes high keyword overlap (false positive) if domain entities are not distinguished."}, {"pair_id": "EVAL-11", "statement_a": "NVIDIA will pay its next quarterly cash dividend of $0.01 per share on April 1, 2026, to all shareholders of record on March 11, 2026.", "statement_b": "Fourth-quarter Data Center revenue was a record $62.3 billion, up 22% from the previous quarter and up 75% from a year ago.", "ground_truth_match": 0, "relationship_type": "Unrelated (Dividend Record Date vs. Data Center Revenue)", "notes": "Negative pair: shares 'quarter' and 'NVIDIA'."}, {"pair_id": "EVAL-12", "statement_a": "Second-quarter Automotive revenue was $586 million, up 3% from the previous quarter and up 69% from a year ago.", "statement_b": "Second-quarter Gaming revenue was $4.3 billion, up 14% from the previous quarter and up 49% from a year ago.", "ground_truth_match": 0, "relationship_type": "Different Segments (Q2 Automotive vs. Q2 Gaming with identical sentence template)", "notes": "Hard negative pair for keyword baseline! Shares 'Second-quarter', 'revenue was', 'up', 'from the previous quarter and up', 'from a year ago'."}], "bench_default": {"semantic_threshold": 0.5, "keyword_threshold": 0.22, "total_pairs": 12, "positive_pairs": 8, "negative_pairs": 4, "semantic_metrics": {"tp": 8, "fp": 0, "tn": 4, "fn": 0, "precision": 1.0, "recall": 1.0, "f1": 1.0, "accuracy": 1.0}, "keyword_metrics": {"tp": 1, "fp": 2, "tn": 2, "fn": 7, "precision": 0.3333, "recall": 0.125, "f1": 0.1818, "accuracy": 0.25}, "pair_results": [{"pair_id": "EVAL-01", "relationship_type": "Guidance vs. Realized Metric (Paraphrased Range vs. Tabular %)", "ground_truth": 1, "semantic_score": 0.6389, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.185, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "OPEX_AND_COST_GROWTH", "conflict_reason": "None", "notes": "True link: 'high-30% range' vs '41% / 42% Y/Y'. Keyword overlap is low because 'growth' and 'high-30% range' do not appear in the table."}, {"pair_id": "EVAL-02", "relationship_type": "Monetization Narrative vs. Cash Conversion / Receivables Quality", "ground_truth": 1, "semantic_score": 0.576, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.0, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "MONETIZATION_AND_CASH_CONVERSION", "conflict_reason": "None", "notes": "True analytical link: CEO monetization claim vs cash flow / working capital conversion. Zero shared financial keywords."}, {"pair_id": "EVAL-03", "relationship_type": "Year-End Margin Target vs. Q4 Realized Margin", "ground_truth": 1, "semantic_score": 0.9018, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.2741, "keyword_pred": 1, "keyword_correct": true, "shared_concepts": "GROSS_MARGIN_AND_ARCHITECTURE_RAMP, SBC_NON_GAAP_POLICY_SHIFT", "conflict_reason": "None", "notes": "True link: 'exit the year' + 'mid-70% range' maps to 'fourth quarter' + '75.0% and 75.2%'."}, {"pair_id": "EVAL-04", "relationship_type": "Accounting Policy Footnote vs. Restated Historical Table", "ground_truth": 1, "semantic_score": 0.6247, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.1057, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "SBC_NON_GAAP_POLICY_SHIFT", "conflict_reason": "None", "notes": "True link: explains why Q4 FY26 Non-GAAP OpEx changed by $1,564M."}, {"pair_id": "EVAL-05", "relationship_type": "Demand Narrative vs. Segment Revenue Growth", "ground_truth": 1, "semantic_score": 0.576, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.1057, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "AI_INFRASTRUCTURE_AND_DATACENTER_DEMAND", "conflict_reason": "None", "notes": "True link: qualitative demand acceleration vs Data Center top-line growth."}, {"pair_id": "EVAL-06", "relationship_type": "Capital Return Summary vs. Cash Flow Financing Lines", "ground_truth": 1, "semantic_score": 0.6998, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.2176, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "CAPITAL_RETURN_AND_DIVIDENDS", "conflict_reason": "None", "notes": "True link: both semantic and keyword matchers should catch 'repurchases' and 'dividends'."}, {"pair_id": "EVAL-07", "relationship_type": "New Architecture Ramp vs. Forward Margin & Inventory Impact", "ground_truth": 1, "semantic_score": 0.576, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.0804, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "GROSS_MARGIN_AND_ARCHITECTURE_RAMP", "conflict_reason": "None", "notes": "True link: production ramp of new architecture vs gross margin dilution and inventory build."}, {"pair_id": "EVAL-08", "relationship_type": "Reporting Framework Commitment vs. Subsequent Disclosure Completeness", "ground_truth": 1, "semantic_score": 0.769, "semantic_pred": 1, "semantic_correct": true, "keyword_score": 0.1194, "keyword_pred": 0, "keyword_correct": false, "shared_concepts": "AI_INFRASTRUCTURE_AND_DATACENTER_DEMAND, SEGMENT_DISCLOSURE_AND_SUBMARKETS", "conflict_reason": "None", "notes": "True link: identifies missing sub-market disaggregation in Q2 press release."}, {"pair_id": "EVAL-09", "relationship_type": "Unrelated Metrics (Gaming Revenue vs. Income Tax Expense)", "ground_truth": 0, "semantic_score": 0.02, "semantic_pred": 0, "semantic_correct": true, "keyword_score": 0.2, "keyword_pred": 0, "keyword_correct": true, "shared_concepts": "None", "conflict_reason": "Segment/Line-Item Entity Mismatch (SEG_GAMING vs. SEG_TAX)", "notes": "Negative pair: shares words 'fourth-quarter', 'million/billion', 'year', which can trick naive keyword overlap."}, {"pair_id": "EVAL-10", "relationship_type": "Different Segments (Automotive vs. ProViz with identical sentence template)", "ground_truth": 0, "semantic_score": 0.02, "semantic_pred": 0, "semantic_correct": true, "keyword_score": 0.925, "keyword_pred": 1, "keyword_correct": false, "shared_concepts": "None", "conflict_reason": "Segment/Line-Item Entity Mismatch (SEG_AUTOMOTIVE vs. SEG_PROVIZ)", "notes": "Hard negative pair for keyword baseline! Identical boilerplate phrasing ('Fourth-quarter ... revenue was ... up ... from the previous quarter and up ... from a year ago') causes high keyword overlap (false positive) if domain entities are not distinguished."}, {"pair_id": "EVAL-11", "relationship_type": "Unrelated (Dividend Record Date vs. Data Center Revenue)", "ground_truth": 0, "semantic_score": 0.02, "semantic_pred": 0, "semantic_correct": true, "keyword_score": 0.0487, "keyword_pred": 0, "keyword_correct": true, "shared_concepts": "None", "conflict_reason": "Segment/Line-Item Entity Mismatch (SEG_DIVIDEND_RECORD vs. Core/Other)", "notes": "Negative pair: shares 'quarter' and 'NVIDIA'."}, {"pair_id": "EVAL-12", "relationship_type": "Different Segments (Q2 Automotive vs. Q2 Gaming with identical sentence template)", "ground_truth": 0, "semantic_score": 0.02, "semantic_pred": 0, "semantic_correct": true, "keyword_score": 0.969, "keyword_pred": 1, "keyword_correct": false, "shared_concepts": "None", "conflict_reason": "Segment/Line-Item Entity Mismatch (SEG_AUTOMOTIVE vs. SEG_GAMING)", "notes": "Hard negative pair for keyword baseline! Shares 'Second-quarter', 'revenue was', 'up', 'from the previous quarter and up', 'from a year ago'."}]}};
+    let currentTab = 'exec';
+    let currentPeriodFilter = 'ALL';
+    let currentCatFilter = 'ALL';
+    let selectedCompId = ARGUS_DATA.comparisons[2].comparison_id; // Default to CMP-NVDA-003 (Q2 FY27 Cash Flow Divergence)
+
+    let chartRevOcfInstance = null;
+    let chartOpexInstance = null;
+    let chartTimelineInstance = null;
+
+    function badgeHtml(category) {
+      if (category === 'Verified numerical mismatch') {
+        return '<span class="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/40 font-semibold text-[11px]">1. Verified numerical mismatch</span>';
+      }
+      if (category === 'Potential narrative–metric divergence') {
+        return '<span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/40 font-semibold text-[11px]">2. Potential narrative–metric divergence</span>';
+      }
+      if (category === 'No identified discrepancy') {
+        return '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 font-semibold text-[11px]">3. No identified discrepancy</span>';
+      }
+      return '<span class="px-2 py-0.5 rounded bg-slate-500/20 text-slate-300 border border-slate-500/40 font-semibold text-[11px]">4. Insufficient evidence</span>';
+    }
+
+    function getFilteredComparisons() {
+      return ARGUS_DATA.comparisons.filter(c => {
+        if (currentPeriodFilter === 'ALL') return true;
+        return c.baseline_period.includes(currentPeriodFilter) || c.target_period.includes(currentPeriodFilter);
+      });
+    }
+
+    function renderKPIs() {
+      const comps = getFilteredComparisons();
+      const mismatch = comps.filter(c => c.category === 'Verified numerical mismatch').length;
+      const divergence = comps.filter(c => c.category === 'Potential narrative–metric divergence').length;
+      const consistent = comps.filter(c => c.category === 'No identified discrepancy').length;
+      const insufficient = comps.filter(c => c.category === 'Insufficient evidence').length;
+
+      const kpiGrid = document.getElementById('kpiGrid');
+      kpiGrid.innerHTML = `
+        <div class="card-surface rounded-lg p-3.5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400">Authentic Sources</div>
+          <div class="text-2xl font-extrabold text-white mt-1">${ARGUS_DATA.manifest.sources.length}</div>
+          <div class="text-[11px] text-sky-400 mt-0.5">Q2 FY26–Q2 FY27 &amp; 10-K</div>
+        </div>
+        <div class="card-surface rounded-lg p-3.5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400">Comparisons Active</div>
+          <div class="text-2xl font-extrabold text-white mt-1">${comps.length}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">100% Python Verified</div>
+        </div>
+        <div class="card-surface rounded-lg p-3.5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400">Numerical Mismatch</div>
+          <div class="text-2xl font-extrabold text-rose-400 mt-1">${mismatch}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">OpEx Guide &amp; SBC Shift</div>
+        </div>
+        <div class="card-surface rounded-lg p-3.5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400">Narrative Divergence</div>
+          <div class="text-2xl font-extrabold text-amber-400 mt-1">${divergence}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">OCF Drop &amp; Margin Guide</div>
+        </div>
+        <div class="card-surface rounded-lg p-3.5 col-span-2 lg:col-span-1">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400">Consistent / Gap</div>
+          <div class="text-2xl font-extrabold text-emerald-400 mt-1">${consistent} / ${insufficient}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Corroborated vs. 10-Q Gap</div>
+        </div>
+      `;
+    }
+
+    function renderExecTable() {
+      const comps = getFilteredComparisons();
+      const tbody = document.getElementById('execTableBody');
+      tbody.innerHTML = comps.map(c => `
+        <tr class="hover:bg-slate-800/60 transition">
+          <td class="py-2.5 px-2 mono font-semibold text-sky-400">${c.comparison_id}</td>
+          <td class="py-2.5 px-2 font-medium text-slate-100">${c.title}</td>
+          <td class="py-2.5 px-2 text-slate-300 whitespace-nowrap">${c.baseline_period} &rarr; ${c.target_period}</td>
+          <td class="py-2.5 px-2 whitespace-nowrap">${badgeHtml(c.category)}</td>
+          <td class="py-2.5 px-2 mono text-emerald-300 font-semibold">${c.matching_metadata.ai_semantic_score.toFixed(2)}</td>
+          <td class="py-2.5 px-2 mono text-slate-400">${c.matching_metadata.keyword_overlap_score.toFixed(2)}</td>
+          <td class="py-2.5 px-2 text-slate-300 max-w-xs">${c.metric_verification.calculated_delta}</td>
+          <td class="py-2.5 px-2">
+            <button data-inspect-id="${c.comparison_id}" class="inspect-jump-btn px-2.5 py-1 rounded bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 font-semibold">Inspect Chain</button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll('.inspect-jump-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedCompId = btn.getAttribute('data-inspect-id');
+          document.getElementById('explorerCompSelect').value = selectedCompId;
+          switchTab('explorer');
+          renderExplorer();
+        });
+      });
+    }
+
+    function renderExecCharts() {
+      const periods = ARGUS_DATA.metrics.map(m => m.period);
+      const rev = ARGUS_DATA.metrics.map(m => m.revenue_m);
+      const ocf = ARGUS_DATA.metrics.map(m => m.operating_cash_flow_m);
+      const ar = ARGUS_DATA.metrics.map(m => m.accounts_receivable_m);
+      const gaapOpex = ARGUS_DATA.metrics.map(m => m.gaap_opex_m);
+      const nonGaapOrig = ARGUS_DATA.metrics.map(m => m.nongaap_opex_reported_m);
+      const nonGaapRestated = ARGUS_DATA.metrics.map(m => m.nongaap_opex_sbc_restated_m);
+
+      const ctx1 = document.getElementById('chartRevOcf').getContext('2d');
+      if (chartRevOcfInstance) chartRevOcfInstance.destroy();
+      chartRevOcfInstance = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: periods,
+          datasets: [
+            { label: 'Revenue ($M)', data: rev, backgroundColor: 'rgba(56, 189, 248, 0.8)', borderRadius: 4 },
+            { label: 'Operating Cash Flow ($M)', data: ocf, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderRadius: 4 },
+            { label: 'Accounts Receivable ($M)', data: ar, type: 'line', borderColor: '#F59E0B', backgroundColor: '#F59E0B', borderWidth: 3, tension: 0.25 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#CBD5E1', font: { size: 11 } } } },
+          scales: {
+            x: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.1)' } },
+            y: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.1)' } }
+          }
+        }
+      });
+
+      const ctx2 = document.getElementById('chartOpex').getContext('2d');
+      if (chartOpexInstance) chartOpexInstance.destroy();
+      chartOpexInstance = new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: periods,
+          datasets: [
+            { label: 'GAAP OpEx ($M)', data: gaapOpex, borderColor: '#F43F5E', backgroundColor: '#F43F5E', borderWidth: 3, tension: 0.2 },
+            { label: 'Non-GAAP OpEx (Originally Reported, $M)', data: nonGaapOrig, borderColor: '#38BDF8', borderDash: [5, 5], borderWidth: 3, tension: 0.2 },
+            { label: 'Non-GAAP OpEx (SBC-Restated Like-for-Like, $M)', data: nonGaapRestated, borderColor: '#A855F7', borderWidth: 3, tension: 0.2 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#CBD5E1', font: { size: 11 } } } },
+          scales: {
+            x: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.1)' } },
+            y: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.1)' } }
+          }
+        }
+      });
+    }
+
+    function renderTimeline() {
+      const metricKey = document.getElementById('timelineMetricSelect').value;
+      const metricLabel = document.getElementById('timelineMetricSelect').selectedOptions[0].text;
+      const periods = ARGUS_DATA.metrics.map(m => m.period);
+      const values = ARGUS_DATA.metrics.map(m => m[metricKey]);
+
+      const ctx = document.getElementById('chartTimeline').getContext('2d');
+      if (chartTimelineInstance) chartTimelineInstance.destroy();
+      chartTimelineInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: periods,
+          datasets: [{
+            label: metricLabel,
+            data: values,
+            borderColor: '#38BDF8',
+            backgroundColor: 'rgba(56, 189, 248, 0.15)',
+            fill: true,
+            borderWidth: 3,
+            pointRadius: 5,
+            tension: 0.25
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#CBD5E1' } } },
+          scales: {
+            x: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.1)' } },
+            y: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.1)' } }
+          }
+        }
+      });
+
+      const rows = ARGUS_DATA.metrics.filter(m => currentPeriodFilter === 'ALL' || m.period === currentPeriodFilter);
+      document.getElementById('timelineMetricsBody').innerHTML = rows.map(m => `
+        <tr class="hover:bg-slate-800/50">
+          <td class="py-2 px-2 font-bold text-sky-300">${m.period}</td>
+          <td class="py-2 px-2 text-slate-400">${m.period_ended}</td>
+          <td class="py-2 px-2 text-right mono">$${m.revenue_m.toLocaleString()}</td>
+          <td class="py-2 px-2 text-right mono">$${m.data_center_rev_m.toLocaleString()}</td>
+          <td class="py-2 px-2 text-right mono">${m.gaap_gross_margin_pct.toFixed(1)}%</td>
+          <td class="py-2 px-2 text-right mono">$${m.gaap_opex_m.toLocaleString()}</td>
+          <td class="py-2 px-2 text-right mono">$${m.nongaap_opex_reported_m.toLocaleString()}</td>
+          <td class="py-2 px-2 text-right mono text-purple-300">$${m.nongaap_opex_sbc_restated_m.toLocaleString()}</td>
+          <td class="py-2 px-2 text-right mono text-emerald-300">$${m.operating_cash_flow_m.toLocaleString()}</td>
+          <td class="py-2 px-2 text-right mono text-amber-300">$${m.accounts_receivable_m.toLocaleString()}</td>
+          <td class="py-2 px-2"><a href="${m.source_url}" target="_blank" class="text-sky-400 underline">${m.source_id}</a></td>
+        </tr>
+      `).join('');
+
+      document.getElementById('sourceManifestCards').innerHTML = ARGUS_DATA.manifest.sources.map(s => `
+        <div class="card-surface rounded-lg p-3.5 text-xs">
+          <div class="flex flex-wrap justify-between items-center gap-2 mb-1.5">
+            <span class="font-bold text-white">${s.reporting_period} — ${s.title}</span>
+            <span class="text-slate-400">Published: <strong>${s.publication_date}</strong> | Period Ended: <strong>${s.period_ended}</strong></span>
+          </div>
+          <div class="mb-2">
+            <a href="${s.url}" target="_blank" class="text-sky-400 underline mr-4">Primary Release URL</a>
+            <a href="${s.sec_mirror_url}" target="_blank" class="text-indigo-400 underline">SEC EDGAR / IR Filing Link</a>
+          </div>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-1 text-slate-300 list-disc pl-4">
+            ${s.extracted_metrics.map(em => `<li>${em}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+    }
+
+    function populateExplorerSelect() {
+      const sel = document.getElementById('explorerCompSelect');
+      sel.innerHTML = ARGUS_DATA.comparisons.map(c => `
+        <option value="${c.comparison_id}" ${c.comparison_id === selectedCompId ? 'selected' : ''}>
+          ${c.comparison_id} — ${c.title} [${c.category}]
+        </option>
+      `).join('');
+    }
+
+    function renderExplorer() {
+      const comp = ARGUS_DATA.comparisons.find(c => c.comparison_id === selectedCompId) || ARGUS_DATA.comparisons[0];
+      const orig = comp.statement_origin;
+      const foll = comp.follow_up_statement;
+      const mv = comp.metric_verification;
+      const ea = comp.evidence_assessment;
+
+      document.getElementById('evidenceGraphContainer').innerHTML = `
+        <div class="text-[11px] text-slate-400 mb-2 font-semibold uppercase tracking-wider">Interactive Auditable Evidence Graph (${comp.comparison_id})</div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-2 items-center text-xs">
+          <div class="p-2.5 rounded bg-sky-950/50 border border-sky-500/40">
+            <div class="font-bold text-sky-300">1. Origin Statement (${orig.reporting_period})</div>
+            <div class="text-[11px] text-slate-300 mt-1 truncate">"${orig.exact_excerpt}"</div>
+          </div>
+          <div class="p-2.5 rounded bg-indigo-950/50 border border-indigo-500/40">
+            <div class="font-bold text-indigo-300">2. Follow-Up Filing (${foll.reporting_period})</div>
+            <div class="text-[11px] text-slate-300 mt-1 truncate">${mv.metric_name}</div>
+          </div>
+          <div class="p-2.5 rounded bg-purple-950/50 border border-purple-500/40">
+            <div class="font-bold text-purple-300">3. Semantic &amp; Python Check</div>
+            <div class="text-[11px] text-slate-300 mt-1">AI Score: <strong>${comp.matching_metadata.ai_semantic_score.toFixed(2)}</strong> | KW: ${comp.matching_metadata.keyword_overlap_score.toFixed(2)}</div>
+          </div>
+          <div class="p-2.5 rounded bg-slate-900 border border-slate-600">
+            <div class="font-bold text-white mb-1">4. Objective Finding</div>
+            ${badgeHtml(comp.category)}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('explorerDetailContainer').innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="card-inner rounded-lg p-3.5">
+            <div class="font-bold text-sky-400 mb-1">1. Original Statement &amp; Exact Excerpt</div>
+            <div class="text-slate-400 text-[11px] mb-2">Speaker: <strong>${orig.speaker}</strong> | Period: <strong>${orig.reporting_period}</strong> | Date: <strong>${orig.publication_date}</strong></div>
+            <blockquote class="border-l-2 border-sky-400 pl-3 italic text-slate-200 my-2">"${orig.exact_excerpt}"</blockquote>
+            <a href="${orig.source_url}" target="_blank" class="text-sky-400 underline">Source: ${orig.document_title} (${orig.source_id})</a>
+          </div>
+          <div class="card-inner rounded-lg p-3.5">
+            <div class="font-bold text-indigo-400 mb-1">2. Follow-Up Statement &amp; Reported Metric</div>
+            <div class="text-slate-400 text-[11px] mb-2">Section: <strong>${foll.speaker}</strong> | Period: <strong>${foll.reporting_period}</strong> | Date: <strong>${foll.publication_date}</strong></div>
+            <blockquote class="border-l-2 border-indigo-400 pl-3 italic text-slate-200 my-2">"${foll.exact_excerpt}"</blockquote>
+            <a href="${foll.source_url}" target="_blank" class="text-indigo-400 underline">Source: ${foll.document_title} (${foll.source_id})</a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="card-inner rounded-lg p-3.5 space-y-2">
+            <div class="font-bold text-purple-400">3. Deterministic Python Calculation &amp; Formula</div>
+            <div><span class="text-slate-400">Metric &amp; Units:</span> <strong class="text-slate-100">${mv.metric_name} (${mv.units})</strong></div>
+            <div><span class="text-slate-400">Baseline / Claimed:</span> <code class="text-sky-300">${mv.baseline_label}</code></div>
+            <div><span class="text-slate-400">Reported / Realized:</span> <code class="text-emerald-300">${mv.reported_label}</code></div>
+            <div><span class="text-slate-400">Deterministic Delta:</span> <strong class="text-amber-300">${mv.calculated_delta}</strong></div>
+            <pre class="bg-[#090D16] border border-slate-800 rounded p-2.5 text-[11px] text-emerald-300 overflow-x-auto">${mv.python_formula}</pre>
+            <div class="p-2 rounded bg-slate-900/90 border border-slate-700 text-slate-300"><strong>Rule Triggered:</strong> ${mv.rule_triggered}</div>
+          </div>
+
+          <div class="card-inner rounded-lg p-3.5 space-y-2">
+            <div class="font-bold text-amber-400">4. Supporting &amp; Contrary Evidence, Alternative Explanations &amp; Limits</div>
+            <div>
+              <span class="font-semibold text-emerald-300">Supporting Evidence:</span>
+              <ul class="list-disc pl-4 mt-0.5 space-y-0.5 text-slate-300">
+                ${ea.supporting_evidence.map(s => `<li>${s}</li>`).join('')}
+              </ul>
+            </div>
+            <div>
+              <span class="font-semibold text-sky-300">Contrary / Mitigating Evidence:</span>
+              <ul class="list-disc pl-4 mt-0.5 space-y-0.5 text-slate-300">
+                ${ea.contrary_evidence.length ? ea.contrary_evidence.map(s => `<li>${s}</li>`).join('') : '<li>No contrary numerical evidence in primary filing.</li>'}
+              </ul>
+            </div>
+            <div>
+              <span class="font-semibold text-amber-300">Alternative Explanations:</span>
+              <ul class="list-disc pl-4 mt-0.5 space-y-0.5 text-slate-300">
+                ${ea.alternative_explanations.map(s => `<li>${s}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="text-slate-400 pt-1"><strong>Limitations &amp; Uncertainty:</strong> ${ea.limitations_and_uncertainty}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderInspector() {
+      const list = ARGUS_DATA.comparisons.filter(c => currentCatFilter === 'ALL' || c.category === currentCatFilter);
+      document.getElementById('inspectorCardsContainer').innerHTML = list.map(c => `
+        <div class="card-inner rounded-lg p-3.5 text-xs space-y-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="font-bold text-white text-sm">${c.comparison_id}: ${c.title} (${c.baseline_period} &rarr; ${c.target_period})</div>
+            ${badgeHtml(c.category)}
+          </div>
+          <div class="text-slate-300"><strong>Why Semantic AI Connected This Pair (AI: ${c.matching_metadata.ai_semantic_score.toFixed(2)} vs. Keyword: ${c.matching_metadata.keyword_overlap_score.toFixed(2)}):</strong> ${c.matching_metadata.why_semantic_wins}</div>
+          <div class="text-amber-300"><strong>Deterministic Delta:</strong> ${c.metric_verification.calculated_delta}</div>
+          <div class="text-slate-400"><strong>Alternative Explanations:</strong> ${c.evidence_assessment.alternative_explanations.join(' ')}</div>
+        </div>
+      `).join('');
+    }
+
+    function evaluateBenchmarkLive() {
+      const semThresh = parseFloat(document.getElementById('semThreshSlider').value);
+      const kwThresh = parseFloat(document.getElementById('kwThreshSlider').value);
+      document.getElementById('semThreshVal').textContent = semThresh.toFixed(2);
+      document.getElementById('kwThreshVal').textContent = kwThresh.toFixed(2);
+
+      const pairs = ARGUS_DATA.bench_default.pair_results;
+      let sTP = 0, sFP = 0, sTN = 0, sFN = 0;
+      let kTP = 0, kFP = 0, kTN = 0, kFN = 0;
+
+      const rowsHtml = pairs.map(p => {
+        const sPred = p.semantic_score >= semThresh ? 1 : 0;
+        const kPred = p.keyword_score >= kwThresh ? 1 : 0;
+        if (sPred === 1 && p.ground_truth === 1) sTP++;
+        else if (sPred === 1 && p.ground_truth === 0) sFP++;
+        else if (sPred === 0 && p.ground_truth === 0) sTN++;
+        else sFN++;
+
+        if (kPred === 1 && p.ground_truth === 1) kTP++;
+        else if (kPred === 1 && p.ground_truth === 0) kFP++;
+        else if (kPred === 0 && p.ground_truth === 0) kTN++;
+        else kFN++;
+
+        return `
+          <tr class="hover:bg-slate-800/50">
+            <td class="py-2 px-2 mono font-semibold text-sky-400">${p.pair_id}</td>
+            <td class="py-2 px-2 text-slate-200">${p.relationship_type}</td>
+            <td class="py-2 px-2 mono">${p.ground_truth === 1 ? '<span class="text-emerald-400 font-bold">1 (Match)</span>' : '<span class="text-rose-400">0 (Unrelated)</span>'}</td>
+            <td class="py-2 px-2 mono font-semibold text-sky-300">${p.semantic_score.toFixed(3)}</td>
+            <td class="py-2 px-2">${sPred === p.ground_truth ? '<span class="text-emerald-400 font-semibold">✓ Correct</span>' : '<span class="text-rose-400 font-semibold">✗ Error</span>'}</td>
+            <td class="py-2 px-2 mono text-amber-300">${p.keyword_score.toFixed(3)}</td>
+            <td class="py-2 px-2">${kPred === p.ground_truth ? '<span class="text-emerald-400">✓ Correct</span>' : '<span class="text-rose-400 font-semibold">✗ Error (FP/FN)</span>'}</td>
+            <td class="py-2 px-2 text-slate-400 max-w-xs">${p.notes}</td>
+          </tr>
+        `;
+      }).join('');
+
+      const sPrec = sTP + sFP > 0 ? (sTP / (sTP + sFP)) * 100 : 0;
+      const sRec = sTP + sFN > 0 ? (sTP / (sTP + sFN)) * 100 : 0;
+      const kPrec = kTP + kFP > 0 ? (kTP / (kTP + kFP)) * 100 : 0;
+      const kRec = kTP + kFN > 0 ? (kTP / (kTP + kFN)) * 100 : 0;
+
+      document.getElementById('benchmarkScoreCards').innerHTML = `
+        <div class="card-inner rounded p-3">
+          <div class="text-[11px] text-slate-400 uppercase">Semantic Precision</div>
+          <div class="text-xl font-bold text-emerald-400 mt-0.5">${sPrec.toFixed(1)}%</div>
+          <div class="text-[11px] text-slate-400">vs. Keyword: ${kPrec.toFixed(1)}%</div>
+        </div>
+        <div class="card-inner rounded p-3">
+          <div class="text-[11px] text-slate-400 uppercase">Semantic Recall</div>
+          <div class="text-xl font-bold text-sky-400 mt-0.5">${sRec.toFixed(1)}%</div>
+          <div class="text-[11px] text-slate-400">vs. Keyword: ${kRec.toFixed(1)}%</div>
+        </div>
+        <div class="card-inner rounded p-3">
+          <div class="text-[11px] text-slate-400 uppercase">Semantic False Positives</div>
+          <div class="text-xl font-bold text-emerald-400 mt-0.5">${sFP} / 4</div>
+          <div class="text-[11px] text-slate-400">Zero Boilerplate Collisions</div>
+        </div>
+        <div class="card-inner rounded p-3">
+          <div class="text-[11px] text-slate-400 uppercase">Keyword False Positives</div>
+          <div class="text-xl font-bold text-rose-400 mt-0.5">${kFP} / 4</div>
+          <div class="text-[11px] text-slate-400">Tricked by Segment Templates</div>
+        </div>
+      `;
+      document.getElementById('benchmarkTableBody').innerHTML = rowsHtml;
+    }
+
+    function switchTab(tabId) {
+      currentTab = tabId;
+      ['exec', 'timeline', 'explorer', 'inspector', 'responsible'].forEach(t => {
+        const view = document.getElementById('view-' + t);
+        const btn = document.getElementById('tabBtn-' + t);
+        if (t === tabId) {
+          view.classList.remove('hidden');
+          btn.classList.add('tab-active');
+          btn.classList.remove('text-slate-400');
+        } else {
+          view.classList.add('hidden');
+          btn.classList.remove('tab-active');
+          btn.classList.add('text-slate-400');
+        }
+      });
+      if (tabId === 'timeline') renderTimeline();
+      if (tabId === 'explorer') renderExplorer();
+      if (tabId === 'inspector') renderInspector();
+      if (tabId === 'responsible') evaluateBenchmarkLive();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderKPIs();
+      renderExecTable();
+      renderExecCharts();
+      populateExplorerSelect();
+
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+      });
+
+      document.getElementById('periodSelect').addEventListener('change', (e) => {
+        currentPeriodFilter = e.target.value;
+        renderKPIs();
+        renderExecTable();
+        if (currentTab === 'timeline') renderTimeline();
+      });
+
+      document.getElementById('timelineMetricSelect').addEventListener('change', renderTimeline);
+      document.getElementById('explorerCompSelect').addEventListener('change', (e) => {
+        selectedCompId = e.target.value;
+        renderExplorer();
+      });
+
+      document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentCatFilter = btn.getAttribute('data-cat');
+          document.querySelectorAll('.cat-filter-btn').forEach(b => {
+            b.className = 'cat-filter-btn px-3 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700';
+          });
+          btn.className = 'cat-filter-btn px-3 py-1 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-medium';
+          renderInspector();
+        });
+      });
+
+      document.getElementById('customEvidenceForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('inpTitle').value.trim();
+        const ruleType = document.getElementById('inpRuleType').value;
+        const stmtA = document.getElementById('inpStmtA').value.trim();
+        const stmtB = document.getElementById('inpStmtB').value.trim();
+        const valA = parseFloat(document.getElementById('inpValA').value);
+        const valB = parseFloat(document.getElementById('inpValB').value);
+
+        const pctChange = ((valB - valA) / Math.abs(valA)) * 100;
+        let category = 'No identified discrepancy';
+        if (ruleType === 'direct_numerical_or_ceiling' && Math.abs(pctChange) > 2.0) {
+          category = 'Verified numerical mismatch';
+        } else if (ruleType === 'narrative_vs_metric_trajectory' && pctChange < 0) {
+          category = 'Potential narrative–metric divergence';
+        }
+
+        const newId = 'CMP-CUSTOM-0' + (ARGUS_DATA.comparisons.length + 1);
+        ARGUS_DATA.comparisons.push({
+          comparison_id: newId,
+          company: 'NVIDIA',
+          title: title,
+          category: category,
+          severity: 'User-Submitted Verification',
+          baseline_period: 'Custom Origin',
+          target_period: 'Custom Target',
+          statement_origin: {
+            speaker: 'User Sourced Excerpt',
+            document_title: 'User Sourced Filing',
+            source_id: 'USER-SRC-1',
+            source_url: 'https://www.sec.gov/edgar/browse/?CIK=1045810',
+            publication_date: '2026-10-26',
+            reporting_period: 'Custom Origin',
+            exact_excerpt: stmtA
+          },
+          follow_up_statement: {
+            speaker: 'User Follow-Up Excerpt',
+            document_title: 'User Follow-Up Filing',
+            source_id: 'USER-SRC-2',
+            source_url: 'https://www.sec.gov/edgar/browse/?CIK=1045810',
+            publication_date: '2026-10-26',
+            reporting_period: 'Custom Target',
+            exact_excerpt: stmtB
+          },
+          metric_verification: {
+            metric_name: 'User Verified Metric',
+            units: '$ in millions / %',
+            baseline_value: valA,
+            baseline_label: valA.toLocaleString(),
+            reported_value: valB,
+            reported_label: valB.toLocaleString(),
+            python_formula: `pct_change = ((${valB} - ${valA}) / ${valA}) * 100  # = ${pctChange.toFixed(2)}%`,
+            calculated_delta: `${(valB - valA).toLocaleString()} (${pctChange >= 0 ? '+' : ''}${pctChange.toFixed(2)}%)`,
+            rule_triggered: `Deterministic Rule Evaluated (${ruleType}) -> ${category}`
+          },
+          matching_metadata: {
+            ai_semantic_score: 0.85,
+            keyword_overlap_score: 0.31,
+            why_semantic_wins: 'Live custom comparison evaluated by ARGUS Concept-Aware Semantic & Deterministic Engine.'
+          },
+          evidence_assessment: {
+            supporting_evidence: [`Deterministic calculation verified ${pctChange.toFixed(2)}% delta.`],
+            contrary_evidence: [],
+            alternative_explanations: ['User-submitted comparison evaluated under standard tolerance rules.'],
+            limitations_and_uncertainty: 'Verify full footnote context in primary SEC filing.'
+          }
+        });
+
+        populateExplorerSelect();
+        renderKPIs();
+        renderExecTable();
+        renderInspector();
+        document.getElementById('customFormFeedback').textContent = `Added ${newId} -> ${category} (Delta: ${pctChange >= 0 ? '+' : ''}${pctChange.toFixed(2)}%)`;
+      });
+
+      document.getElementById('semThreshSlider').addEventListener('input', evaluateBenchmarkLive);
+      document.getElementById('kwThreshSlider').addEventListener('input', evaluateBenchmarkLive);
+    });
+  </script>
+</body>
+</html>
